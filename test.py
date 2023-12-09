@@ -46,7 +46,7 @@ print(get.geometry.GetSelectedBeams()[0:10])
 
 print("\nGROUP FUNCTIONS\n")
 
-group_1 = '_CAN'
+group_1 = '_SOME_GROUPU'
 
 print(get.geometry.GetGroupEntityCount(group_1))
 print(get.geometry.GetGroupEntities(group_1)[0:10])

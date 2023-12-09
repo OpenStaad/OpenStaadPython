@@ -1,8 +1,3 @@
-# OpenStaadPython
-Python library to simplify the connection with OpenSTAAD API 
-
-followings functions has beam implementes, see test.py
-
 | Function                    | Module     | Staad_Module | 
 |-----------------------------|------------|--------------| 
 | GetAnalysisStatus           | File       | Root         | 
