@@ -10,7 +10,6 @@ setup(
     url='https://github.com/OpenStaad',
     keywords='OpenStaad',
     install_requires=[
-        'required_package1',
-        'required_package2',
+        'comtypes==1.2.0'
     ],
 )
