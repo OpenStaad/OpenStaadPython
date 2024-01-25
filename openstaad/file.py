@@ -12,6 +12,7 @@ class File():
                             "GetSTAADFileFolder",
                             'GetInputUnitForForce',
                             'GetInputUnitForLength',
+                            'GetLoadCaseTitle'
         ]
 
         for function_name in self._functions:
@@ -178,3 +179,5 @@ class File():
         self._os.GetSTAADFileFolder(fileFolder)
 
         return fileFolder[0]
+
+    

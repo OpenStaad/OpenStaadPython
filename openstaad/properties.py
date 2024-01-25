@@ -8,7 +8,10 @@ class Properties():
         self._functions= [
             'GetBeamSectionName',
             'GetBeamSectionPropertyRefNo',
-            'GetSectionPropertyValues'
+            'GetSectionPropertyValues',
+            'GetAlphaAngleForSection',
+            'GetMemberReleaseSpecEx',
+            'GetMemberSpecCode'
         ]
 
         for function_name in self._functions:
@@ -93,3 +96,70 @@ class Properties():
                 'Tf': a9,
                 'Tw': a10
                 }
+    
+    ## SPECIFICATIONS
+
+    def GetAlphaAngleForSection(self,ref_no):
+        """
+        Returns the alpha angle of the section in radian.
+        Gets the angle between the principal axis and geometric axis of the section
+
+        Parameters:
+        [in]	nPropNo	The specified property ID.
+        [out]	dAlpha	alpha angle returned (in Radian).
+        """
+        safe_n1 = make_safe_array_double(0)
+        n1 = make_variant_vt_ref(safe_n1,  automation.VT_R8)
+
+        self._os.GetAlphaAngleForSection(ref_no,n1)
+
+        return n1.value[0]
+    
+     ## SPECIFICATIONS
+
+    def GetMemberReleaseSpecEx(self,beam, star = True):
+    ## solo funcionan ben el n1 que es el de los releses FX, FY, FZ, MX, MY, MZ
+        if star:
+            end = 0
+        else:
+            end = 1
+
+        safe_n1 = make_safe_array_long(6)
+        n1 = make_variant_vt_ref(safe_n1, automation.VT_ARRAY | automation.VT_I4)
+
+        safe_n2 = make_safe_array_long(6)
+        n2 = make_variant_vt_ref(safe_n2, automation.VT_ARRAY | automation.VT_I4)
+
+        safe_n3 = make_safe_array_long(6)
+        n3 = make_variant_vt_ref(safe_n3, automation.VT_ARRAY | automation.VT_I4)
+
+        safe_n4 = make_safe_array_long(6)
+        n4 = make_variant_vt_ref(safe_n4, automation.VT_ARRAY | automation.VT_I4)
+
+        retval = self._os.GetMemberReleaseSpecEx(beam,end,n1,n2,n3,n4)
+
+        return n1.value[0]
+    
+    def isrelease(self, memb):
+        rel_i = self.GetMemberReleaseSpecEx(memb, star=True)
+        rel_j = self.GetMemberReleaseSpecEx(memb,star=False)     
+
+        if rel_i == (0,0,0,0,0,0) and rel_j == (0,0,0,0,0,0):
+            return False
+        else:
+            return True
+        
+    def GetMemberSpecCode(self, memb):
+        """
+        Warning('GetMemberSpecCode output could be wrong')
+         0->    Truss Member
+         1->	Tension-only Member
+         2->	Compression-only Member
+         3->	Cable-only Member
+         4->	Joist Member
+        -1->    Other
+        """
+        make_safe_array_int = make_safe_array_long(1)
+        spe = make_variant_vt_ref(make_safe_array_int, automation.VT_ARRAY | automation.VT_I4)
+        # print(Warning('GetMemberSpecCode output could be wrong'))
+        return int(self._os.GetMemberSpecCode(memb,spe))

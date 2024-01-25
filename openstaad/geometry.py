@@ -23,7 +23,9 @@ class Geometry():
             'GetMemberIncidence',
             'GetNoOfSelectedBeams',
             'GetGroupEntities',
-            'GetGroupEntityCount'
+            'GetGroupEntityCount',
+            'GetNoOfBeamsConnectedAtNode',
+            'GetBeamsConnectedAtNode'
         ]
 
         for function_name in self._functions:
@@ -149,6 +151,20 @@ class Geometry():
         self._os.GetSelectedBeams(lista)
 
         return (lista[0])
+
+    def GetNoOfBeamsConnectedAtNode(self,node):
+        return self._os.GetNoOfBeamsConnectedAtNode(node)
+       
+ 
+    def GetBeamsConnectedAtNode(self,node):
+        No_Nodes = self._os.GetNoOfBeamsConnectedAtNode(node)
+       
+        safe_list = make_safe_array_long(No_Nodes)
+        list = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+ 
+        retval=self._os.GetBeamsConnectedAtNode(node,list)
+ 
+        return list[0]
 
     ## GROUP FUNCTIONS
 
