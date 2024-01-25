@@ -30,6 +30,16 @@ followings functions has beam implementes, see test.py
 | GetSelectedBeams            | Geometry   | Geometry     | 
 | GetGroupEntities            | Geometry   | Geometry     | 
 | GetGroupEntityCount         | Geometry   | Geometry     | 
+| GetNoOfBeamsConnectedAtNode | Geometry   | Geometry     | 
+| GetBeamsConnectedAtNode     | Geometry   | Geometry     | 
 | GetBeamSectionName          | Properties | Property     | 
 | GetBeamSectionPropertyRefNo | Properties | Property     | 
 | GetSectionPropertyValues    | Properties | Property     | 
+| GetAlphaAngleForSection     | Properties | Property     | 
+| GetMemberReleaseSpecEx      | Properties | Property     | 
+| GetMemberSpecCode           | Properties | Property     | 
+| GetMemberSpecCode           | Properties | Property     | 
+| GetLoadCaseTitle            | Load       | Property     | 
+| GetMemberEndForces          | results    | Property     | 
+| GetSupportReactions         | results    | Property     | 
+
