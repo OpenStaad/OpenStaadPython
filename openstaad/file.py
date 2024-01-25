@@ -11,8 +11,7 @@ class File():
                             "GetSTAADFile",
                             "GetSTAADFileFolder",
                             'GetInputUnitForForce',
-                            'GetInputUnitForLength',
-                            'GetLoadCaseTitle'
+                            'GetInputUnitForLength'
         ]
 
         for function_name in self._functions:
