@@ -41,6 +41,8 @@ print(get.geometry.GetMemberCount())
 print(get.geometry.GetMemberIncidence(beam_1))
 print(get.geometry.GetNoOfSelectedBeams())
 print(get.geometry.GetSelectedBeams()[0:10])
+print(get.geometry.GetNoOfBeamsConnectedAtNode(node_1))
+print(get.geometry.GetBeamsConnectedAtNode(node_1))
 
 ## GEOMETRY - GROUP
 
@@ -60,3 +62,17 @@ beam_1 = 10
 print(get.properties.GetBeamSectionName(beam_1))
 print(get.properties.GetBeamSectionPropertyRefNo(beam_1))
 print(get.properties.GetSectionPropertyValues(4))
+print(get.properties.GetMemberSpecCode(424))
+
+
+## OUTPUT FUNCTIONS
+
+print("\nOUTPUT FUNCTIONS\n")
+
+beam_1 = 384
+node = 1
+# print(get.results.GetMemberEndForces(beam=beam_1, start=False, lc=5001, local = 1))
+# print(get.results.GetMemberEndForces(beam=beam_1, start=False, lc=5001, local = 0))
+# print(get.results.GetSupportReactions(node))
+print(get.load.GetLoadCaseTitle(lc=11))
+
