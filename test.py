@@ -74,5 +74,5 @@ node = 1
 # print(get.results.GetMemberEndForces(beam=beam_1, start=False, lc=5001, local = 1))
 # print(get.results.GetMemberEndForces(beam=beam_1, start=False, lc=5001, local = 0))
 # print(get.results.GetSupportReactions(node))
-print(get.load.GetLoadCaseTitle(lc=11))
+print(get.load.GetLoadCaseTitle(lc=1))
 
