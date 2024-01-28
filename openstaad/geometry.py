@@ -1,7 +1,7 @@
 from openstaad.Safe_variables import *
 from comtypes import automation
 
-class Geometry():
+class _Geometry():
     def __init__(self,os):
         self._os = os.Geometry
 

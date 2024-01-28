@@ -1,7 +1,7 @@
 from openstaad.Safe_variables import *
 from comtypes import automation
 
-class Properties():
+class _Properties():
     def __init__(self,os):
         self._os = os.Property
 
