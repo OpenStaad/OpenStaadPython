@@ -1,7 +1,7 @@
 from openstaad.Safe_variables import *
 from comtypes import automation
 
-class File():
+class _File():
     def __init__(self,os):
         self._os = os
         
