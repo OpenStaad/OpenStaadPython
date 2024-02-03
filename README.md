@@ -1,45 +1,88 @@
-# OpenStaadPython
-Python library to simplify the connection with OpenSTAAD API 
+# OpenStaad
 
-followings functions has beam implementes, see test.py
+## Abstract
 
-| Function                    | Module     | Staad_Module | 
-|-----------------------------|------------|--------------| 
-| GetAnalysisStatus           | File       | Root         | 
-| GetApplicationVersion       | File       | Root         | 
-| GetBaseUnit                 | File       | Root         | 
-| GetInputUnitForForce        | File       | Root         | 
-| GetInputUnitForLength       | File       | Root         | 
-| GetSTAADFile                | File       | Root         | 
-| GetSTAADFileFolder          | File       | Root         | 
-| GetLastNodeNo               | Geometry   | Geometry     | 
-| GetNodeCoordinates          | Geometry   | Geometry     | 
-| GetNodeCount                | Geometry   | Geometry     | 
-| GetNodeDistance             | Geometry   | Geometry     | 
-| GetNodeIncidence            | Geometry   | Geometry     | 
-| GetNodeList                 | Geometry   | Geometry     | 
-| GetNodeNumber               | Geometry   | Geometry     | 
-| GetNoOfSelectedNodes        | Geometry   | Geometry     | 
-| GetSelectedNodes            | Geometry   | Geometry     | 
-| GetBeamLength               | Geometry   | Geometry     | 
-| GetBeamList                 | Geometry   | Geometry     | 
-| GetLastBeamNo               | Geometry   | Geometry     | 
-| GetMemberCount              | Geometry   | Geometry     | 
-| GetMemberIncidence          | Geometry   | Geometry     | 
-| GetNoOfSelectedBeams        | Geometry   | Geometry     | 
-| GetSelectedBeams            | Geometry   | Geometry     | 
-| GetGroupEntities            | Geometry   | Geometry     | 
-| GetGroupEntityCount         | Geometry   | Geometry     | 
-| GetNoOfBeamsConnectedAtNode | Geometry   | Geometry     | 
-| GetBeamsConnectedAtNode     | Geometry   | Geometry     | 
-| GetBeamSectionName          | Properties | Property     | 
-| GetBeamSectionPropertyRefNo | Properties | Property     | 
-| GetSectionPropertyValues    | Properties | Property     | 
-| GetAlphaAngleForSection     | Properties | Property     | 
-| GetMemberReleaseSpecEx      | Properties | Property     | 
-| GetMemberSpecCode           | Properties | Property     | 
-| GetMemberSpecCode           | Properties | Property     | 
-| GetLoadCaseTitle            | Load       | Property     | 
-| GetMemberEndForces          | results    | Property     | 
-| GetSupportReactions         | results    | Property     | 
+This Python package is designed to facilitate the connection between the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) and python, focus initially on all *Get* functions across all modules. 
 
+## Quick Info
+
+- `openstaad-py` is a Python package to call easily *Get* functions from the OpenStaad API.
+- MIT-License
+- the intended audience are StaadPro usert with knowlege i python.
+- Compatibitity:
+    - Tested with Python 3.10.9
+    - Operating System: Windows 11  
+- Dependencies:
+    - [comtypes](https://pypi.org/project/comtypes/)
+
+- See [implemented funcionts](docs/implemented.md) for a list of what are working.
+- Please contact the [developer](openstee611@gmail.com) for requests.
+
+## Installation
+
+Basic installation by pip.
+
+    pip install openstaad
+
+## A simple example
+
+For the next example, a valid STAAD.Pro file should be open.
+
+```Python
+from openstaad import Get
+
+get = Get()
+
+# Function that returns a list
+beam_list = get.geometry.GetBeamList()
+
+# Function that retuns a string
+file_name = get.file.GetSTAADFile()
+
+# Function that recibe an argument
+beam_number = 10 
+beam_nodes = get.GetMemberIncidence(beam_number)
+
+
+print(beam_list)
+print(file_name)
+print(beam_nodes)
+```
+
+## Website
+
+Not yet implemented
+
+## Documentation
+
+See [documentation](/docs/) folder 
+
+## Contribution
+
+The source code of *openstaad* can be found at __GitHub__, target your pull requests 
+to the `main` branch:
+
+https://github.com/OpenStaad/OpenStaadPython/pulls
+
+
+## Feedback
+
+Questions and feedback at __GitHub Discussions__:
+
+https://github.com/OpenStaad/OpenStaadPython/discussions
+
+Questions at __Stack Overflow__:
+
+Post questions at [stack overflow](https://stackoverflow.com/) and use the tag `openstaadpython` or `openstaadpy`.
+
+Issue tracker at __GitHub__: https://github.com/OpenStaad/OpenStaadPython/issues
+
+## Contact
+
+Please __always__ post questions at the [forum](https://github.com/OpenStaad/OpenStaadPython/discussions) 
+or [stack overflow](https://stackoverflow.com/) to make answers 
+available to other users as well. 
+
+Feedback is greatly appreciated.
+
+Konrad
