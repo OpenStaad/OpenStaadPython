@@ -6,16 +6,16 @@ This Python package is designed to facilitate the connection between the [OpenSt
 
 ## Quick Info
 
-- `openstaad-py` is a Python package to call easily *Get* functions from the OpenStaad API.
+- `openstaad` is a Python package to call easily *Get* functions from the OpenStaad API.
 - MIT-License
-- the intended audience are StaadPro usert with knowlege i python.
+- The intended audience is StaadPro users with knowledge of Python
 - Compatibitity:
     - Tested with Python 3.10.9
     - Operating System: Windows 11  
 - Dependencies:
     - [comtypes](https://pypi.org/project/comtypes/)
 
-- See [implemented funcionts](docs/implemented.md) for a list of what are working.
+- See [implemented funcionts](docs/implemented.md) for a list of currently working features.
 - Please contact the [developer](openstee611@gmail.com) for requests.
 
 ## Installation
@@ -59,8 +59,7 @@ See [documentation](/docs/) folder
 
 ## Contribution
 
-The source code of *openstaad* can be found at __GitHub__, target your pull requests 
-to the `main` branch:
+The source code of *openstaad* can be found at __GitHub__, target your pull requests to the `main` branch:
 
 https://github.com/OpenStaad/OpenStaadPython/pulls
 
@@ -73,7 +72,7 @@ https://github.com/OpenStaad/OpenStaadPython/discussions
 
 Questions at __Stack Overflow__:
 
-Post questions at [stack overflow](https://stackoverflow.com/) and use the tag `openstaadpython` or `openstaadpy`.
+Post questions at [stack overflow](https://stackoverflow.com/) and use the tag `openstaad` or `openstaadpython`.
 
 Issue tracker at __GitHub__: https://github.com/OpenStaad/OpenStaadPython/issues
 
