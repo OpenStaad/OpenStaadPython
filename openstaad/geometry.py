@@ -27,7 +27,9 @@ class Geometry():
             'GetGroupEntities',
             'GetGroupEntityCount',
             'GetNoOfBeamsConnectedAtNode',
-            'GetBeamsConnectedAtNode'
+            'GetBeamsConnectedAtNode',
+            'ClearMemberSelection',
+            'SelectMultipleBeams'
         ]
 
         for function_name in self._functions:
@@ -181,3 +183,13 @@ class Geometry():
         self._os.GetGroupEntities(group_name,lista)
         
         return lista[0]
+    
+    def ClearMemberSelection(self):
+        self._os.ClearMemberSelection()
+
+    def SelectMultipleBeams(self, lista):
+        
+        safe_list = make_safe_array_long_input(lista)
+        lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+        
+        self._os.SelectMultipleBeams(lista_variant)

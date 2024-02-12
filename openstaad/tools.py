@@ -19,6 +19,9 @@ def make_variant_vt_ref(obj, var_type):
     var.vt = var_type | automation.VT_BYREF
     return var
 
+def make_safe_array_long_input(lista): 
+    return automation._midlSAFEARRAY(ctypes.c_long).create(lista)
+
 
 APICALL = {'file':'',
             'geometry':'Geometry',
