@@ -684,7 +684,7 @@
   {
     "Api_Call": "Geometry",
     "Function": "ClearMemberSelection",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Geometry",
     "Priority": false,
     "Staad_Module": "Geometry",
@@ -750,7 +750,7 @@
   {
     "Api_Call": "Geometry",
     "Function": "GetBeamsConnectedAtNode",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Geometry",
     "Priority": true,
     "Staad_Module": "Geometry",
@@ -838,7 +838,7 @@
   {
     "Api_Call": "Geometry",
     "Function": "GetNoOfBeamsConnectedAtNode",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Geometry",
     "Priority": true,
     "Staad_Module": "Geometry",
@@ -948,7 +948,7 @@
   {
     "Api_Call": "Geometry",
     "Function": "SelectMultipleBeams",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Geometry",
     "Priority": false,
     "Staad_Module": "Geometry",
@@ -2708,7 +2708,7 @@
   {
     "Api_Call": "Property",
     "Function": "GetAlphaAngleForSection",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Specifications",
     "Priority": null,
     "Staad_Module": "Property",
@@ -2840,7 +2840,7 @@
   {
     "Api_Call": "Property",
     "Function": "GetMemberReleaseSpecEx",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Specifications",
     "Priority": null,
     "Staad_Module": "Property",
@@ -2851,7 +2851,7 @@
   {
     "Api_Call": "Property",
     "Function": "GetMemberSpecCode",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Specifications",
     "Priority": null,
     "Staad_Module": "Property",
@@ -4820,7 +4820,7 @@
   {
     "Api_Call": "Load",
     "Function": "GetLoadCaseTitle",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Load Case Details",
     "Priority": null,
     "Staad_Module": "Load",
@@ -5337,7 +5337,7 @@
   {
     "Api_Call": "View",
     "Function": "HideAllMembers",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5359,7 +5359,7 @@
   {
     "Api_Call": "View",
     "Function": "HideMember",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5370,7 +5370,7 @@
   {
     "Api_Call": "View",
     "Function": "HideMembers",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5414,7 +5414,7 @@
   {
     "Api_Call": "View",
     "Function": "RefreshView",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5667,7 +5667,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowAllMembers",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5678,7 +5678,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowBack",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5689,7 +5689,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowBottom",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5700,7 +5700,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowFront",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5711,7 +5711,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowIsometric",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5722,7 +5722,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowLeft",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5744,7 +5744,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowMembers",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5755,7 +5755,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowPlan",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5766,7 +5766,7 @@
   {
     "Api_Call": "View",
     "Function": "ShowRight",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5777,7 +5777,7 @@
   {
     "Api_Call": "View",
     "Function": "SpinLeft",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5788,7 +5788,7 @@
   {
     "Api_Call": "View",
     "Function": "SpinRight",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5799,7 +5799,7 @@
   {
     "Api_Call": "View",
     "Function": "ZoomAll",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5810,7 +5810,7 @@
   {
     "Api_Call": "View",
     "Function": "ZoomExtentsMainView",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Views",
     "Priority": null,
     "Staad_Module": "Views",
@@ -5854,7 +5854,7 @@
   {
     "Api_Call": "Output",
     "Function": "GetSupportReactions",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Results",
     "Priority": null,
     "Staad_Module": "Analysis Results",
@@ -5931,7 +5931,7 @@
   {
     "Api_Call": "Output",
     "Function": "GetMemberEndForces",
-    "Implemented": false,
+    "Implemented": true,
     "Module": "Results",
     "Priority": null,
     "Staad_Module": "Analysis Results",

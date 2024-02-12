@@ -13,7 +13,6 @@ class Geometry():
             "GetNodeCount",
             "GetNodeDistance",
             "GetNodeIncidence",
-            "GetNodeIncidence_CIS2",
             "GetNodeList",
             "GetNodeNumber",
             "GetNoOfSelectedNodes",

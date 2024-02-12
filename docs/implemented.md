@@ -1,30 +1,57 @@
-| Function                    | Module     | Staad_Module | 
-|-----------------------------|------------|--------------| 
-| GetAnalysisStatus           | File       | Root         | 
-| GetApplicationVersion       | File       | Root         | 
-| GetBaseUnit                 | File       | Root         | 
-| GetInputUnitForForce        | File       | Root         | 
-| GetInputUnitForLength       | File       | Root         | 
-| GetSTAADFile                | File       | Root         | 
-| GetSTAADFileFolder          | File       | Root         | 
-| GetLastNodeNo               | Geometry   | Geometry     | 
-| GetNodeCoordinates          | Geometry   | Geometry     | 
-| GetNodeCount                | Geometry   | Geometry     | 
-| GetNodeDistance             | Geometry   | Geometry     | 
-| GetNodeIncidence            | Geometry   | Geometry     | 
-| GetNodeList                 | Geometry   | Geometry     | 
-| GetNodeNumber               | Geometry   | Geometry     | 
-| GetNoOfSelectedNodes        | Geometry   | Geometry     | 
-| GetSelectedNodes            | Geometry   | Geometry     | 
-| GetBeamLength               | Geometry   | Geometry     | 
-| GetBeamList                 | Geometry   | Geometry     | 
-| GetLastBeamNo               | Geometry   | Geometry     | 
-| GetMemberCount              | Geometry   | Geometry     | 
-| GetMemberIncidence          | Geometry   | Geometry     | 
-| GetNoOfSelectedBeams        | Geometry   | Geometry     | 
-| GetSelectedBeams            | Geometry   | Geometry     | 
-| GetGroupEntities            | Geometry   | Geometry     | 
-| GetGroupEntityCount         | Geometry   | Geometry     | 
-| GetBeamSectionName          | Properties | Property     | 
-| GetBeamSectionPropertyRefNo | Properties | Property     | 
-| GetSectionPropertyValues    | Properties | Property     | 
+| Staad_Module     | Function                    |
+|:-----------------|:----------------------------|
+| Root             | GetAnalysisStatus           |
+| Root             | GetApplicationVersion       |
+| Root             | GetBaseUnit                 |
+| Root             | GetInputUnitForForce        |
+| Root             | GetInputUnitForLength       |
+| Root             | GetSTAADFile                |
+| Root             | GetSTAADFileFolder          |
+| Geometry         | GetLastNodeNo               |
+| Geometry         | GetNodeCoordinates          |
+| Geometry         | GetNodeCount                |
+| Geometry         | GetNodeDistance             |
+| Geometry         | GetNodeIncidence            |
+| Geometry         | GetNodeList                 |
+| Geometry         | GetNodeNumber               |
+| Geometry         | GetNoOfSelectedNodes        |
+| Geometry         | GetSelectedNodes            |
+| Geometry         | ClearMemberSelection        |
+| Geometry         | GetBeamLength               |
+| Geometry         | GetBeamList                 |
+| Geometry         | GetBeamsConnectedAtNode     |
+| Geometry         | GetLastBeamNo               |
+| Geometry         | GetMemberCount              |
+| Geometry         | GetMemberIncidence          |
+| Geometry         | GetNoOfBeamsConnectedAtNode |
+| Geometry         | GetNoOfSelectedBeams        |
+| Geometry         | GetSelectedBeams            |
+| Geometry         | SelectMultipleBeams         |
+| Geometry         | GetGroupEntities            |
+| Geometry         | GetGroupEntityCount         |
+| Property         | GetBeamSectionName          |
+| Property         | GetBeamSectionPropertyRefNo |
+| Property         | GetSectionPropertyValues    |
+| Property         | GetAlphaAngleForSection     |
+| Property         | GetMemberReleaseSpecEx      |
+| Property         | GetMemberSpecCode           |
+| Load             | GetLoadCaseTitle            |
+| Views            | HideAllMembers              |
+| Views            | HideMember                  |
+| Views            | HideMembers                 |
+| Views            | RefreshView                 |
+| Views            | ShowAllMembers              |
+| Views            | ShowBack                    |
+| Views            | ShowBottom                  |
+| Views            | ShowFront                   |
+| Views            | ShowIsometric               |
+| Views            | ShowLeft                    |
+| Views            | ShowMembers                 |
+| Views            | ShowPlan                    |
+| Views            | ShowRight                   |
+| Views            | SpinLeft                    |
+| Views            | SpinRight                   |
+| Views            | ZoomAll                     |
+| Views            | ZoomExtentsMainView         |
+| Analysis Results | GetSupportReactions         |
+| Analysis Results | GetMemberEndForces          |
