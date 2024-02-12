@@ -1,9 +1,11 @@
-from openstaad.Safe_variables import *
+from openstaad.tools import *
 from comtypes import automation
+from comtypes import client
 
-class _Load():
-    def __init__(self,os):
-        self._os = os.Load
+class Load():
+    def __init__(self):
+        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
+        self._load = self._staad.Load
 
         self._functions= [
             'GetLoadCaseTitle'

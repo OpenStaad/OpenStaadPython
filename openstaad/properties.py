@@ -1,9 +1,11 @@
-from openstaad.Safe_variables import *
+from openstaad.tools import *
 from comtypes import automation
+from comtypes import client
 
-class _Properties():
-    def __init__(self,os):
-        self._os = os.Property
+class Properties():
+    def __init__(self):
+        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
+        self._property = self._staad.Property
 
         self._functions= [
             'GetBeamSectionName',

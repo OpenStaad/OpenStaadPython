@@ -1,17 +1,19 @@
-from openstaad.Safe_variables import *
+from openstaad.tools import *
 from comtypes import automation
+from comtypes import client
 
-class _File():
-    def __init__(self,os):
-        self._os = os
+class Root():
+    def __init__(self):      
+        staad = client.GetActiveObject("StaadPro.OpenSTAAD")
+        self._file = staad.module
         
-        self._functions = ["GetAnalysisStatus",
-                            "GetApplicationVersion",
-                            "GetBaseUnit",
-                            "GetSTAADFile",
-                            "GetSTAADFileFolder",
-                            'GetInputUnitForForce',
-                            'GetInputUnitForLength'
+        self._functions = ['GetAnalysisStatus',
+                           'GetApplicationVersion',
+                           'GetBaseUnit',
+                           'GetSTAADFile',
+                           'GetSTAADFileFolder',
+                           'GetInputUnitForForce',
+                           'GetInputUnitForLength'
         ]
 
         for function_name in self._functions:

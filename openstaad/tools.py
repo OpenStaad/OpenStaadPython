@@ -18,3 +18,15 @@ def make_variant_vt_ref(obj, var_type):
     var._.c_void_p = ctypes.addressof(obj)
     var.vt = var_type | automation.VT_BYREF
     return var
+
+
+APICALL = {'file':'',
+            'geometry':'Geometry',
+            'property':'Property',
+            'support':'Support',
+            'load':'Load',
+            'table':'Table',
+            'view':'View',
+            'output':'Output',
+            'commands':'Commands'
+}

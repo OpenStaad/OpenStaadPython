@@ -1,9 +1,11 @@
-from openstaad.Safe_variables import *
+from openstaad.tools import *
 from comtypes import automation
+from comtypes import client
 
-class _Results():
-    def __init__(self,os):
-        self._os = os.Output
+class Output():
+    def __init__(self):
+        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
+        self._output = self._staad.Output
 
         self._functions= [
             'GetMemberEndForces',

@@ -1,10 +1,11 @@
-from openstaad.Safe_variables import *
+from openstaad.tools import *
 from comtypes import automation
+from comtypes import client
 
-class _Select():
-    def __init__(self,os):
-        self._os = os.Geometry
-        self._view = os.View
+class View():
+    def __init__(self):
+        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
+        self._view = self._staad.View
 
         self._functions= [
             'SelectMultipleBeams'
