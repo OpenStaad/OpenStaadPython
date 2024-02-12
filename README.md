@@ -2,11 +2,11 @@
 
 ## Abstract
 
-This Python package is designed to facilitate the connection between the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) and python, focus initially on all *Get* functions across all modules. 
+This Python package is designed to facilitate the connection between the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) and python. 
 
 ## Quick Info
 
-- `openstaad` is a Python package to call easily *Get* functions from the OpenStaad API.
+- `openstaad` is a Python package to call easily functions from the OpenStaad API.
 - MIT-License
 - The intended audience is StaadPro users with knowledge of Python
 - Compatibitity:
@@ -29,19 +29,20 @@ Basic installation by pip.
 For the next example, a valid STAAD.Pro file should be open.
 
 ```Python
-from openstaad import Get
+from openstaad import Geometry, Root
 
-get = Get()
+geometry = Geometry()
+root = Root()
 
 # Function that returns a list
-beam_list = get.geometry.GetBeamList()
+beam_list = geometry.GetBeamList()
 
 # Function that retuns a string
-file_name = get.file.GetSTAADFile()
+file_name = root.GetSTAADFile()
 
 # Function that recibe an argument
 beam_number = 10 
-beam_nodes = get.GetMemberIncidence(beam_number)
+beam_nodes = geometry.GetMemberIncidence(beam_number)
 
 
 print(beam_list)
