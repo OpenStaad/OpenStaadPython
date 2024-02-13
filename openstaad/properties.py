@@ -17,15 +17,15 @@ class Properties():
         ]
 
         for function_name in self._functions:
-            self._os._FlagAsMethod(function_name)
+            self._property._FlagAsMethod(function_name)
 
     ## PROPERTIES FUNCTIONS
 
     def GetBeamSectionName(self,beam):
-        return self._os.GetBeamSectionName(beam)
+        return self._property.GetBeamSectionName(beam)
 
     def GetBeamSectionPropertyRefNo(self,beam):
-        return self._os.GetBeamSectionPropertyRefNo(beam)
+        return self._property.GetBeamSectionPropertyRefNo(beam)
 
 
     def GetSectionPropertyValues(self,ref_no):
@@ -73,7 +73,7 @@ class Properties():
 
        
                 
-        ret_val = self._os.GetSectionPropertyValues(ref_no,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10)
+        ret_val = self._property.GetSectionPropertyValues(ref_no,n1,n2,n3,n4,n5,n6,n7,n8,n9,n10)
         
         a1 = round(n1.value[0]*1000)/1000
         a2 = round(n2.value[0]*1000)/1000
@@ -113,7 +113,7 @@ class Properties():
         safe_n1 = make_safe_array_double(0)
         n1 = make_variant_vt_ref(safe_n1,  automation.VT_R8)
 
-        self._os.GetAlphaAngleForSection(ref_no,n1)
+        self._property.GetAlphaAngleForSection(ref_no,n1)
 
         return n1.value[0]
     
@@ -138,7 +138,7 @@ class Properties():
         safe_n4 = make_safe_array_long(6)
         n4 = make_variant_vt_ref(safe_n4, automation.VT_ARRAY | automation.VT_I4)
 
-        retval = self._os.GetMemberReleaseSpecEx(beam,end,n1,n2,n3,n4)
+        retval = self._property.GetMemberReleaseSpecEx(beam,end,n1,n2,n3,n4)
 
         return n1.value[0]
     
@@ -164,4 +164,4 @@ class Properties():
         make_safe_array_int = make_safe_array_long(1)
         spe = make_variant_vt_ref(make_safe_array_int, automation.VT_ARRAY | automation.VT_I4)
         # print(Warning('GetMemberSpecCode output could be wrong'))
-        return int(self._os.GetMemberSpecCode(memb,spe))
+        return int(self._property.GetMemberSpecCode(memb,spe))

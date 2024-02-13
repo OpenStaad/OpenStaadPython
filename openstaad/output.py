@@ -13,7 +13,7 @@ class Output():
         ]
 
         for function_name in self._functions:
-            self._os._FlagAsMethod(function_name)
+            self._output._FlagAsMethod(function_name)
 
     ## PROPERTIES FUNCTIONS
 
@@ -26,7 +26,7 @@ class Output():
         else:
             end = 1
 
-        retval = self._os.GetMemberEndForces(beam, end,lc,x,local)
+        retval = self._output.GetMemberEndForces(beam, end,lc,x,local)
 
         return x.value[0]
 
@@ -34,6 +34,6 @@ class Output():
         safe_n1 = make_safe_array_double(6)
         x = make_variant_vt_ref(safe_n1,  automation.VT_ARRAY |  automation.VT_R8)
 
-        retval = self._os.GetSupportReactions(node,lc,x)
+        retval = self._output.GetSupportReactions(node,lc,x)
 
         return x.value[0]

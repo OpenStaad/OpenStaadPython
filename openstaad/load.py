@@ -12,7 +12,7 @@ class Load():
         ]
 
         for function_name in self._functions:
-            self._os._FlagAsMethod(function_name)
+            self._load._FlagAsMethod(function_name)
 
     def GetLoadCaseTitle(self,lc):
-        return self._os.GetLoadCaseTitle(lc)
+        return self._load.GetLoadCaseTitle(lc)

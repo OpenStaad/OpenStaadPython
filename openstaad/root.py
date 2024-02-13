@@ -5,7 +5,7 @@ from comtypes import client
 class Root():
     def __init__(self):      
         staad = client.GetActiveObject("StaadPro.OpenSTAAD")
-        self._file = staad.module
+        self._root = staad
         
         self._functions = ['GetAnalysisStatus',
                            'GetApplicationVersion',
@@ -17,7 +17,7 @@ class Root():
         ]
 
         for function_name in self._functions:
-            self._os._FlagAsMethod(function_name)
+            self._root._FlagAsMethod(function_name)
     
     def GetAnalysisStatus(self):
         """
@@ -59,7 +59,7 @@ class Root():
         szModelNameWithPath = self.GetSTAADFile(bFullPath=True)
 
 
-        retval = self._os.GetAnalysisStatus(szModelNameWithPath, NoOfWarnings, NoofErrors, CPUTime)
+        retval = self._root.GetAnalysisStatus(szModelNameWithPath, NoOfWarnings, NoofErrors, CPUTime)
 
         status_dict = {
                         -2: "Invalid model path",
@@ -97,7 +97,7 @@ class Root():
         safe_Build = make_safe_array_long(0)
         Build = make_variant_vt_ref(safe_Build,  automation.VT_I4)  
 
-        self._os.GetApplicationVersion(MajorA, MajorB, Minor, Build)
+        self._root.GetApplicationVersion(MajorA, MajorB, Minor, Build)
         
         output = 'Version ' + str(MajorA[0]) + '.' + str(MajorB[0]) + '.' + str(Minor[0]) + '.' + str(Build[0])
 
@@ -117,7 +117,7 @@ class Root():
         safe_retVal  = make_safe_array_long(0)
         retVal  = make_variant_vt_ref(safe_retVal ,  automation.VT_I4)  
 
-        retVal = self._os.GetBaseUnit()
+        retVal = self._root.GetBaseUnit()
 
         output = {1:'English',2:'Metric'}
 
@@ -135,7 +135,7 @@ class Root():
         safe_retVal  = make_safe_array_long(0)
         retVal  = make_variant_vt_ref(safe_retVal ,  automation.VT_I4)  
 
-        a = self._os.GetInputUnitForForce(retVal)
+        a = self._root.GetInputUnitForForce(retVal)
     
         return output[a]
 
@@ -150,7 +150,7 @@ class Root():
         safe_retVal  = make_safe_array_long(0)
         retVal  = make_variant_vt_ref(safe_retVal ,  automation.VT_I4)  
 
-        a = self._os.GetInputUnitForLength(retVal)
+        a = self._root.GetInputUnitForLength(retVal)
     
         return output[a]
 
@@ -167,7 +167,7 @@ class Root():
         safe_fileName = make_safe_str()
         fileName = make_variant_vt_ref(safe_fileName,  automation.VT_BSTR)
         
-        self._os.GetSTAADFile(fileName, bFullPath)
+        self._root.GetSTAADFile(fileName, bFullPath)
         return fileName[0]
     
     def GetSTAADFileFolder(self):
@@ -177,7 +177,7 @@ class Root():
         safe_fileFolder = make_safe_str()
         fileFolder = make_variant_vt_ref(safe_fileFolder,  automation.VT_BSTR)
 
-        self._os.GetSTAADFileFolder(fileFolder)
+        self._root.GetSTAADFileFolder(fileFolder)
 
         return fileFolder[0]
 
