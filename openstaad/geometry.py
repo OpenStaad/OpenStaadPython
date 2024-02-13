@@ -23,12 +23,13 @@ class Geometry():
             'GetLastBeamNo',
             'GetMemberIncidence',
             'GetNoOfSelectedBeams',
-            'GetGroupEntities',
-            'GetGroupEntityCount',
+            'GetSelectedBeams',
             'GetNoOfBeamsConnectedAtNode',
             'GetBeamsConnectedAtNode',
+            'GetGroupEntities',
+            'GetGroupEntityCount',
             'ClearMemberSelection',
-            'SelectMultipleBeams'
+            'SelectMultipleBeams',
         ]
 
         for function_name in self._functions:

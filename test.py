@@ -137,9 +137,6 @@ print('-'*20+'\nOutput Functions\n'+'-'*20)
 print('- GetMemberEndForces')
 print(output.GetMemberEndForces(beam=beam_1, start=False, lc=1, local = 1))
 
-print('- GetMemberEndForces')
-print(output.GetMemberEndForces(beam=beam_1, start=False, lc=1, local = 0))
-
 print('- GetSupportReactions')
 print(output.GetSupportReactions(node_1))
 
