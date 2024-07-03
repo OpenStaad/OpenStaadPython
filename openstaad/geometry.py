@@ -1,9 +1,12 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+from comtypes import CoInitialize
 
 class Geometry():
+    CoInitialize()
     def __init__(self):
+        # CoInitialize()
         self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
         self._geometry = self._staad.Geometry
 
@@ -30,6 +33,10 @@ class Geometry():
             'GetGroupEntityCount',
             'ClearMemberSelection',
             'SelectMultipleBeams',
+            'GetGroupCount',
+            'GetGroupNames',
+            'CreatePhysicalMember'
+
         ]
 
         for function_name in self._functions:
@@ -193,3 +200,30 @@ class Geometry():
         lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
         
         self._geometry.SelectMultipleBeams(lista_variant)
+
+    def GetGroupCount(self,grouptype):
+        return self._geometry.GetGroupCount(grouptype)
+
+    def GetGroupNames(self,grouptype):
+        group_count = self._geometry.GetGroupCount(grouptype)
+        group_names_safe_array = make_safe_array_string(group_count)
+        group_names = make_variant_vt_ref(group_names_safe_array, automation.VT_ARRAY | automation.VT_BSTR)
+
+        self._geometry.GetGroupNames(grouptype, group_names)
+
+        return group_names[0]
+    
+    def CreatePhysicalMember(self,member_list:list):
+        """
+        Creates a physical member from specified analytical members.
+        Note: This method is not supported for physical models
+        
+        MemberList	List of physical member IDs (array of type long) that would form the physical member to be created
+        """
+        num=len(member_list)
+
+        safe_list = make_safe_array_long_input(member_list)
+        lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+        retval=self._geometry.CreatePhysicalMember(num,lista_variant,None)
+        
+

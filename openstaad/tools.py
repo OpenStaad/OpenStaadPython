@@ -13,6 +13,9 @@ def make_safe_array_long(size):
 def make_safe_str(): 
     return automation.c_char_p()
 
+def make_safe_array_string(size):
+    return automation._midlSAFEARRAY(automation.BSTR).create([""]*size)
+
 def make_variant_vt_ref(obj, var_type):
     var = automation.VARIANT()
     var._.c_void_p = ctypes.addressof(obj)
