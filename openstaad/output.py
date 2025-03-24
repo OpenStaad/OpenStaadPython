@@ -31,6 +31,7 @@ class Output():
         return x.value[0]
 
     def GetSupportReactions(self, node,lc :int= 1):
+        
         safe_n1 = make_safe_array_double(6)
         x = make_variant_vt_ref(safe_n1,  automation.VT_ARRAY |  automation.VT_R8)
 

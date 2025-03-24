@@ -1,6 +1,7 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+import os
 
 class Root():
     def __init__(self):      
@@ -13,7 +14,10 @@ class Root():
                            'GetSTAADFile',
                            'GetSTAADFileFolder',
                            'GetInputUnitForForce',
-                           'GetInputUnitForLength'
+                           'GetInputUnitForLength',
+                           'NewSTAADFile',
+                           'Analyze',
+                           'SaveModel'
         ]
 
         for function_name in self._functions:
@@ -180,5 +184,71 @@ class Root():
         self._root.GetSTAADFileFolder(fileFolder)
 
         return fileFolder[0]
-
     
+    def NewSTAADFile(self, file_name: str = "Structure1.STD",len_unit: int = 4, force_unit: int = 5):
+        """
+        This function creates a .STD file with specified length and force units.
+
+        Parameters:
+
+        file_name
+            A string variable that will hold the name of the .STD file, which needs to be created.
+        
+        len_unit
+            An integer variable that will hold the input unit to be assigned for length of the new .STD file.
+
+            Value may vary from 0 to 7 
+            0- Inch
+            1- Feet
+            2- Feet
+            3- CentiMeter
+            4- Meter
+            5- MilliMeter
+            6 - DeciMeter
+            7 – KiloMeter
+
+        force_unit
+            An integer variable that will hold the input unit to be assigned for force of the new .STD file.
+            Value may vary from 0 to 7
+            0- Kilopound
+            1- Pound
+            2- Kilogram
+            3-Metric Ton
+            4- Newton
+            5-Kilo Newton
+            6- Mega Newton
+            7- DecaNewton
+                """
+        
+        # create a proper path for the new file in the current folder
+
+        # get the current folder path using os module
+
+        folder = os.getcwd()
+        folder_path = os.path.join(folder, "Staad_folder")
+
+        num = 1
+
+        while os.path.exists(folder_path):
+            folder_path = folder_path + "_"+str(num)
+
+            if os.path.exists(folder_path):
+                folder_path = folder_path[:-2]
+                num += 1
+            else:
+                exit
+        
+        os.mkdir(folder_path)
+
+        if ".STD" not in file_name:
+            file_name = file_name + ".STD"
+        
+        path = os.path.join(folder_path, file_name)
+        
+        self._root.NewSTAADFile(path,len_unit,force_unit)
+    
+    def Analyze(self):
+        self._root.Analyze()
+
+    def SaveModel(self,silent:int):
+        self._root.SaveModel(silent)

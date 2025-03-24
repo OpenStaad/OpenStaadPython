@@ -4,3 +4,6 @@ from .load import Load
 from .output import Output
 from .properties import Properties
 from .view import View
+from .support import Support
+from .command import Command
+from .design import Design

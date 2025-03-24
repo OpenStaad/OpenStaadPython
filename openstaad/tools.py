@@ -34,5 +34,6 @@ APICALL = {'file':'',
             'table':'Table',
             'view':'View',
             'output':'Output',
-            'commands':'Commands'
+            'command':'Command',
+            'design':'Design'
 }

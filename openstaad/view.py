@@ -27,7 +27,8 @@ class View():
             "ShowRight",
             "SpinLeft",
             "SpinRight",
-            "ZoomAll"
+            "ZoomAll",
+            "SelectMembersParallelTo"
         ]
 
         for function_name in self._functions:
@@ -59,7 +60,7 @@ class View():
 
     def HideMember(self,IDMember):
         self._view.HideMember(IDMember)
-        self._view.RefreshView()
+        # self._view.RefreshView()
 
     def HideMembers(self,NMembers,NaMemberNos):
         safe_list = make_safe_array_long_input(NaMemberNos)
@@ -117,4 +118,7 @@ class View():
 
     def ZoomAll(self):
         self._view.ZoomAll()
+
+    def SelectMembersParallelTo(self,axis):
+        self._view.SelectMembersParallelTo(axis)
     
