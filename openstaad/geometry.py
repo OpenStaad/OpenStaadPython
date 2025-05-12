@@ -36,11 +36,20 @@ class Geometry():
             'GetGroupCount',
             'GetGroupNames',
             'CreatePhysicalMember',
-            'AddNode',
-            'AddBeam',
-            'DoTranslationalRepeat',
-            'GetIntersectBeamsCount',
-            'IntersectBeams'
+            'DeletePhysicalMember',
+            'GetAnalyticalMemberCountForPhysicalMember',
+            'GetAnalyticalMembersForPhysicalMember',
+            'GetLastPhysicalMemberNo',
+            'GetNoOfSelectedPhysicalMembers',
+            'GetPhysicalMemberCount',
+            'GetPhysicalMemberList',
+            'GetPhysicalMemberUniqueID',
+            'GetPMemberCount',
+            'GetSelectedPhysicalMembers',
+            'SelectMultiplePhysicalMembers',
+            'SelectPhysicalMember',
+            'SetPhysicalMemberUniqueID'
+
         ]
 
         for function_name in self._functions:
@@ -230,90 +239,61 @@ class Geometry():
         lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
         retval=self._geometry.CreatePhysicalMember(num,lista_variant,None)
         
+    def DeletePhysicalMember(self,p_member:int):
+        self._geometry.DeletePhysicalMember(p_member)
 
+    def GetAnalyticalMemberCountForPhysicalMember(self,p_member:int):
+        return self._geometry.GetAnalyticalMemberCountForPhysicalMember(p_member)
 
-    def AddNode(self,x:float=0.0,y:float=0.0,z:float=0.0):
-        retval=self._geometry.AddNode(x,y,z)
-        return retval
-    
-    def AddBeam(self,node_A,node_B):
-        retval=self._geometry.AddBeam(node_A,node_B)
-        return retval
-
-    def make_safe_array_long(data):
-        if not isinstance(data, list):
-            raise TypeError("Data must be a list of integers")
+    #Not Working yet
+    def GetAnalyticalMembersForPhysicalMember(self, p_member: int):
         
-        size = len(data)
-        safe_array = automation._midlSAFEARRAY(ctypes.c_long).create([0] * size)
-        
-        for i in range(size):
-            safe_array[i] = data[i]
-        
-        return safe_array
+        no_am = self._geometry.GetAnalyticalMemberCountForPhysicalMember(p_member)
 
-    def make_variant_vt_ref(safe_array, vt_type):
-        variant = automation.VARIANT()
-        variant.vt = vt_type
-        variant._.parray = safe_array
-        return variant
-    
-    def DoTranslationalRepeat(self, varLinkBays: bool, varOpenBase: bool, varAxisDir: int, varSpacingArray: list[float], varNobays: int, varRenumberBay: bool, varRenumberArray: list, varGeometryOnly: bool):
-        try:
+        if no_am == 0:
+            return []
+
+        safe_list = automation._midlSAFEARRAY(ctypes.c_int).create([0] * no_am)
+
+        var_p_member = automation.VARIANT(p_member)
+        var_no_am = automation.VARIANT(no_am)
+        var_member_list = automation.VARIANT()
+        var_member_list._.c_void_p = ctypes.addressof(safe_list)
+        var_member_list.vt = automation.VT_ARRAY | automation.VT_I4 | automation.VT_BYREF
+
+        self._geometry.GetAnalyticalMembersForPhysicalMember(
+            var_p_member, var_no_am, var_member_list
+        )
+
+        return list(safe_list)
+
+    def GetLastPhysicalMemberNo(self):
+        return self._geometry.GetLastPhysicalMemberNo()
+
+    def GetNoOfSelectedPhysicalMembers(self):
+        return self._geometry.GetNoOfSelectedPhysicalMembers()
+
+    def GetPhysicalMemberCount(self):
+        return self._geometry.GetPhysicalMemberCount()
             
-            def make_safe_array_double(array):
-                size = len(array)
-                return automation._midlSAFEARRAY(ctypes.c_double).create(array)
+    def GetPhysicalMemberList(self):
+        no_p_members=self._geometry.GetPhysicalMemberCount()
 
-            # Conversión de varSpacingArray
-            safe_spacing_array = make_safe_array_double(varSpacingArray)
-            varSpacingArray = make_variant_vt_ref(safe_spacing_array, automation.VT_ARRAY | automation.VT_R8)
+        safe_list = make_safe_array_long(no_p_members)
+        lista = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+
+        self._geometry.GetPhysicalMemberList(lista)
+
+        return (lista[0])
+    
+    def GetPhysicalMemberUniqueID(self,p_member):
+        return self._geometry.GetPhysicalMemberUniqueID(p_member)
+    
+    def GetPMemberCount(self):
+        return self._geometry.GetPMemberCount()
             
-            retval = self._geometry.DoTranslationalRepeat(varLinkBays, varOpenBase, varAxisDir, varSpacingArray, varNobays, varRenumberBay, varRenumberArray, varGeometryOnly)
-            return retval
-        except Exception as e:
-            print(f"An error occurred in DoTranslationalRepeat: {e}")
-            raise
-    
-    def IntersectBeams(self, Method: int, BeamNosArray: list[int], dTolerance: float, NewBeamNosArray: int):
-        
-        # Conversión de dTolerance
-        safe_n1 = make_safe_array_double(1)
-        dTolerance = make_variant_vt_ref(safe_n1, automation.VT_R8)
-
-        # Ajuste en make_safe_array_long para manejar listas
-        def make_safe_array_long(array):
-            size = len(array)
-            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
-        
-        # Conversión de BeamNosArray
-        safe_beam_list = make_safe_array_long(BeamNosArray)
-        BeamNosArray = make_variant_vt_ref(safe_beam_list, automation.VT_ARRAY | automation.VT_I4)
-        
-        # Conversión de NewBeamNosArray
-        # safe_beam_list = make_safe_array_long(NewBeamNosArray)
-        # NewBeamNosArray = make_variant_vt_ref(safe_beam_list, automation.VT_ARRAY | automation.VT_I4)
-
-        
-        # Llamada a la función interna
-        retval = self._geometry.IntersectBeams(Method, BeamNosArray, dTolerance, NewBeamNosArray)
-        return retval
-    
-    def GetIntersectBeamsCount(self, BeamNosArray: list[int], dTolerance: float):
-        safe_n1 = make_safe_array_double(1)
-        dTolerance = make_variant_vt_ref(safe_n1, automation.VT_R8)
-        
-        def make_safe_array_long(array):
-            size = len(array)
-            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
-        
-        safe_list = make_safe_array_long(BeamNosArray)
-        BeamNosArray = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
-        
-        n_beams = self._geometry.GetIntersectBeamsCount(BeamNosArray, dTolerance)
-        return n_beams
-    
-
-    
-
-
+            # 'GetAnalyticalMembersForPhysicalMember',
+            # 'GetSelectedPhysicalMembers',
+            # 'SelectMultiplePhysicalMembers',
+            # 'SelectPhysicalMember',
+            # 'SetPhysicalMemberUniqueID'
