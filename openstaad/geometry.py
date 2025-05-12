@@ -11,42 +11,53 @@ class Geometry():
         self._geometry = self._staad.Geometry
 
         self._functions= [
+            "AddBeam",
+            "AddNode",
+            "ClearMemberSelection",
+            "CreatePhysicalMember",
+            "DeletePhysicalMember",
+            "DoTranslationalRepeat",
+            "GetAnalyticalMemberCountForPhysicalMember",
+            "GetAnalyticalMembersForPhysicalMember",
+            "GetBeamLength",
+            "GetBeamList",
+            "GetBeamsConnectedAtNode",
+            "GetGroupCount",
+            "GetGroupEntities",
+            "GetGroupEntityCount",
+            "GetGroupNames",
+            "GetIntersectBeamsCount",
+            "GetLastBeamNo",
             "GetLastNodeNo",
+            "GetLastPhysicalMemberNo",
+            "GetMemberCount",
+            "GetMemberIncidence",
             "GetNodeCoordinates",
             "GetNodeCount",
             "GetNodeDistance",
             "GetNodeIncidence",
             "GetNodeList",
             "GetNodeNumber",
+            "GetNoOfBeamsConnectedAtNode",
+            "GetNoOfSelectedBeams",
             "GetNoOfSelectedNodes",
+            "GetNoOfSelectedPhysicalMembers",
+            "GetPMemberCount",
+            "GetPhysicalMemberCount",
+            "GetPhysicalMemberList",
+            "GetPhysicalMemberUniqueID",
+            "GetSelectedBeams",
             "GetSelectedNodes",
-            'GetBeamLength',
-            'GetBeamList',
-            'GetMemberCount',
-            'GetLastBeamNo',
-            'GetMemberIncidence',
-            'GetNoOfSelectedBeams',
-            'GetSelectedBeams',
-            'GetNoOfBeamsConnectedAtNode',
-            'GetBeamsConnectedAtNode',
-            'GetGroupEntities',
-            'GetGroupEntityCount',
-            'ClearMemberSelection',
-            'SelectMultipleBeams',
-            'GetGroupCount',
-            'GetGroupNames',
-            'CreatePhysicalMember',
-            'AddNode',
-            'AddBeam',
-            'DoTranslationalRepeat',
-            'GetIntersectBeamsCount',
-            'IntersectBeams'
+            "GetSelectedPhysicalMembers",
+            "IntersectBeams",
+            "SelectMultipleBeams",
+            "SelectMultiplePhysicalMembers",
+            "SelectPhysicalMember",
+            "SetPhysicalMemberUniqueID"
         ]
 
         for function_name in self._functions:
             self._geometry._FlagAsMethod(function_name)
-
-    ## NODE FUNCTIONS
 
     def GetLastNodeNo(self):
         return self._geometry.GetLastNodeNo()
@@ -119,8 +130,6 @@ class Geometry():
         self._geometry.GetSelectedNodes(lista)
 
         return (lista[0])
-
-    ## BEAM FUNCTIONS
     
     def GetBeamLength(self,beam):
         length = round(self._geometry.GetBeamLength(beam)*1000)/1000
@@ -181,8 +190,6 @@ class Geometry():
  
         return list[0]
 
-    ## GROUP FUNCTIONS
-
     def GetGroupEntityCount(self,group_name):
         return self._geometry.GetGroupEntityCount(group_name)
 
@@ -230,16 +237,20 @@ class Geometry():
         lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
         retval=self._geometry.CreatePhysicalMember(num,lista_variant,None)
         
-
-
     def AddNode(self,x:float=0.0,y:float=0.0,z:float=0.0):
         retval=self._geometry.AddNode(x,y,z)
         return retval
-    
+
     def AddBeam(self,node_A,node_B):
         retval=self._geometry.AddBeam(node_A,node_B)
         return retval
+    
+    def DeletePhysicalMember(self,p_member:int):
+        self._geometry.DeletePhysicalMember(p_member)
 
+    def GetAnalyticalMemberCountForPhysicalMember(self,p_member:int):
+        return self._geometry.GetAnalyticalMemberCountForPhysicalMember(p_member)
+    
     def make_safe_array_long(data):
         if not isinstance(data, list):
             raise TypeError("Data must be a list of integers")
@@ -257,7 +268,7 @@ class Geometry():
         variant.vt = vt_type
         variant._.parray = safe_array
         return variant
-    
+
     def DoTranslationalRepeat(self, varLinkBays: bool, varOpenBase: bool, varAxisDir: int, varSpacingArray: list[float], varNobays: int, varRenumberBay: bool, varRenumberArray: list, varGeometryOnly: bool):
         try:
             
@@ -274,7 +285,7 @@ class Geometry():
         except Exception as e:
             print(f"An error occurred in DoTranslationalRepeat: {e}")
             raise
-    
+
     def IntersectBeams(self, Method: int, BeamNosArray: list[int], dTolerance: float, NewBeamNosArray: int):
         
         # Conversión de dTolerance
@@ -298,7 +309,7 @@ class Geometry():
         # Llamada a la función interna
         retval = self._geometry.IntersectBeams(Method, BeamNosArray, dTolerance, NewBeamNosArray)
         return retval
-    
+
     def GetIntersectBeamsCount(self, BeamNosArray: list[int], dTolerance: float):
         safe_n1 = make_safe_array_double(1)
         dTolerance = make_variant_vt_ref(safe_n1, automation.VT_R8)
@@ -312,8 +323,51 @@ class Geometry():
         
         n_beams = self._geometry.GetIntersectBeamsCount(BeamNosArray, dTolerance)
         return n_beams
+
+    #Not Working yet
+    def GetAnalyticalMembersForPhysicalMember(self, p_member: int):
+        
+        no_am = self._geometry.GetAnalyticalMemberCountForPhysicalMember(p_member)
+
+        if no_am == 0:
+            return []
+
+        safe_list = automation._midlSAFEARRAY(ctypes.c_int).create([0] * no_am)
+
+        var_p_member = automation.VARIANT(p_member)
+        var_no_am = automation.VARIANT(no_am)
+        var_member_list = automation.VARIANT()
+        var_member_list._.c_void_p = ctypes.addressof(safe_list)
+        var_member_list.vt = automation.VT_ARRAY | automation.VT_I4 | automation.VT_BYREF
+
+        self._geometry.GetAnalyticalMembersForPhysicalMember(
+            var_p_member, var_no_am, var_member_list
+        )
+
+        return list(safe_list)
+
+    def GetLastPhysicalMemberNo(self):
+        return self._geometry.GetLastPhysicalMemberNo()
+
+    def GetNoOfSelectedPhysicalMembers(self):
+        return self._geometry.GetNoOfSelectedPhysicalMembers()
+
+    def GetPhysicalMemberCount(self):
+        return self._geometry.GetPhysicalMemberCount()
+            
+    def GetPhysicalMemberList(self):
+        no_p_members=self._geometry.GetPhysicalMemberCount()
+
+        safe_list = make_safe_array_long(no_p_members)
+        lista = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+
+        self._geometry.GetPhysicalMemberList(lista)
+
+        return (lista[0])
     
-
+    def GetPhysicalMemberUniqueID(self,p_member):
+        return self._geometry.GetPhysicalMemberUniqueID(p_member)
     
-
-
+    def GetPMemberCount(self):
+        return self._geometry.GetPMemberCount()
+            
