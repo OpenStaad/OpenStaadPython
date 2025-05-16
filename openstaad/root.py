@@ -8,21 +8,25 @@ class Root():
         staad = client.GetActiveObject("StaadPro.OpenSTAAD")
         self._root = staad
         
-        self._functions = ['GetAnalysisStatus',
-                           'GetApplicationVersion',
-                           'GetBaseUnit',
-                           'GetSTAADFile',
-                           'GetSTAADFileFolder',
-                           'GetInputUnitForForce',
-                           'GetInputUnitForLength',
-                           'NewSTAADFile',
-                           'Analyze',
-                           'SaveModel'
+        self._functions = [
+            'Analyze',
+            'GetAnalysisStatus',
+            'GetApplicationVersion',
+            'GetBaseUnit',
+            'GetInputUnitForForce',
+            'GetInputUnitForLength',
+            'GetSTAADFile',
+            'GetSTAADFileFolder',
+            'NewSTAADFile',
+            'SaveModel'
         ]
 
         for function_name in self._functions:
             self._root._FlagAsMethod(function_name)
     
+    def Analyze(self):
+        self._root.Analyze()
+
     def GetAnalysisStatus(self):
         """
         Get analysis status for the open STAAD Model. 
@@ -246,9 +250,8 @@ class Root():
         path = os.path.join(folder_path, file_name)
         
         self._root.NewSTAADFile(path,len_unit,force_unit)
-    
-    def Analyze(self):
-        self._root.Analyze()
 
     def SaveModel(self,silent:int):
         self._root.SaveModel(silent)
+
+    
