@@ -53,7 +53,23 @@ class Geometry():
             "SelectMultipleBeams",
             "SelectMultiplePhysicalMembers",
             "SelectPhysicalMember",
-            "SetPhysicalMemberUniqueID"
+            "SetPhysicalMemberUniqueID",
+            "GetLastPlateNo",
+            "GetNoOfSelectedPlates",
+            "GetPlateCount",
+            "GetPlateIncidence",
+            "GetPlateNodeCount",
+            "GetPlateList",
+            "GetPlateUniqueID",
+            "GetSelectedPlates",
+            "SelectPlate",
+            "SelectMultiplePlates",
+            "SetPlateUniqueID",
+            "ClearPlateSelection",
+            "AddPlate",
+            "AddMultiplePlates",
+            "DeletePlate",
+            "GetAreaOfPlates"
         ]
 
         for function_name in self._functions:
@@ -370,4 +386,116 @@ class Geometry():
     
     def GetPMemberCount(self):
         return self._geometry.GetPMemberCount()
+        
+    def ClearPlateSelection(self):
+        self._geometry.ClearPlateSelection() 
+
+    def GetLastPlateNo(self):
+        """
+        Returns the plate number ID of the last plate in the model.
+        """
+        return self._geometry.GetLastPlateNo()
+    
+    def GetNoOfSelectedPlates(self):
+        """Returns the number of selected plate(s)."""
+        return self._geometry.GetNoOfSelectedPlates()
+    
+    def GetPlateCount(self):
+        """Returns the total number of plates in the current model."""
+        return self._geometry.GetPlateCount()
+    
+    def GetPlateNodeCount(self,plate):
+        """Returns the number of nodes provided with for plate connectivity."""
+        return self._geometry.GetPlateNodeCount(plate)
+    
+    def GetPlateIncidence(self,plate):
+        safe_n1 = make_safe_array_long(1)
+        p1 = make_variant_vt_ref(safe_n1,  automation.VT_I4)
+
+        safe_n2 = make_safe_array_long(1)
+        p2 = make_variant_vt_ref(safe_n2,  automation.VT_I4)
+
+        safe_n3 = make_safe_array_long(1)
+        p3 = make_variant_vt_ref(safe_n3,  automation.VT_I4)
+
+        safe_n4 = make_safe_array_long(1)
+        p4 = make_variant_vt_ref(safe_n4,  automation.VT_I4)
+
+        self._geometry.GetPlateIncidence(plate,p1,p2,p3,p4)
+
+        number_of_nodes = self.GetPlateNodeCount(plate)
+
+        return (p1[0],p2[0],p3[0],p4[0])[0:number_of_nodes]
+    
+    def GetPlateList(self):
+        n_nodes =  self._geometry.GetPlateCount()
+        safe_list = make_safe_array_long(n_nodes)
+        lista = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+
+        self._geometry.GetPlateList(lista)
+
+        return (lista[0])
+    
+    def GetPlateUniqueID(self,plate):
+        return self._geometry.GetPlateUniqueID(plate)
+    
+    def GetSelectedPlates(self):
+        n_nodes = self.GetNoOfSelectedPlates()
+        safe_list = make_safe_array_long(n_nodes)
+        lista = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+
+        self._geometry.GetSelectedPlates(lista)
+
+        return (lista[0])
+    
+    #SelectPlate
+
+    def SelectPlate(self,plate,add_mode = True):
+        if not add_mode:
+            self.ClearPlateSelection()
+
+        self._geometry.SelectPlate(plate)
+
+    def SelectMultiplePlates(self, lista, add_mode = True):
+        if not add_mode:
+            self.ClearPlateSelection()
+        
+        safe_list = make_safe_array_long_input(lista)
+        lista_variant = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+        
+        self._geometry.SelectMultiplePlates(lista_variant)
+
+    def SetPlateUniqueID(self,plate,unique_id):
+        self._geometry.SetPlateUniqueID(plate,unique_id)  
+
+    def AddPlate(self,node_A,node_B, node_C, node_D = None):
+
+        if node_D == None:
+           self._geometry.AddPlate(node_A,node_B, node_C)
+
+        else:
+            self._geometry.AddPlate(node_A,node_B, node_C, node_D)
             
+    def DeletePlate(self,plate):
+        self._geometry.DeletePlate(plate)
+        
+       
+    def _GetAreaOfPlate(self,plate):
+        safe_n1 = make_safe_array_double(1)
+        x = make_variant_vt_ref(safe_n1,  automation.VT_ARRAY |  automation.VT_R8)
+
+        self._geometry.GetAreaOfPlates([plate],x)
+        
+        return x.value[0][0]
+    
+    def GetAreaOfPlates(self,plates):
+        areas = []
+        for plate in plates:
+            area = self._GetAreaOfPlate(plate)
+            areas.append(area)
+
+        return areas
+
+    
+
+    
