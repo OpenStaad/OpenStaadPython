@@ -1,5 +1,7 @@
 # OpenStaad
 
+[![PyPI Downloads](https://static.pepy.tech/badge/openstaad)](https://pepy.tech/projects/openstaad)
+
 ## Abstract
 
 This Python package is designed to facilitate the connection between the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) and python. 
