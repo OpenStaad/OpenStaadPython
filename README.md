@@ -4,11 +4,14 @@
 
 ## Abstract
 
-This Python package is designed to facilitate the connection between the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) and python. 
+openstaad python is a starting project to wrap the official OpenStaad API functionalities into a Python package.
+
+It aims to facilitate the connection with the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) functions, avoiding boilerplate code and type management, allowing the user to focus on the real automation tasks.
 
 ## Quick Info
 
 - `openstaad` is a Python package to call easily functions from the OpenStaad API.
+- Require a StaadPRO and a valid file open to connect
 - MIT-License
 - The intended audience is StaadPro users with knowledge of Python
 - Compatibitity:
@@ -17,14 +20,15 @@ This Python package is designed to facilitate the connection between the [OpenSt
 - Dependencies:
     - [comtypes](https://pypi.org/project/comtypes/)
 
-- See [implemented funcionts](docs/implemented.md) for a list of currently working features.
 - Please contact the [developer](openstee611@gmail.com) for requests.
 
 ## Installation
 
 Basic installation by pip.
 
-    pip install openstaad
+```bash 
+pip install openstaad
+```
 
 ## A simple example
 
@@ -54,11 +58,7 @@ print(beam_nodes)
 
 ## Website
 
-Not yet implemented
-
-## Documentation
-
-See [documentation](/docs/) folder 
+[www.openstaad.com](https://www.openstaad.com/)
 
 ## Contribution
 
@@ -70,20 +70,15 @@ https://github.com/OpenStaad/OpenStaadPython/pulls
 ## Feedback
 
 Questions and feedback at __GitHub Discussions__:
-
 https://github.com/OpenStaad/OpenStaadPython/discussions
 
-Questions at __Stack Overflow__:
-
-Post questions at [stack overflow](https://stackoverflow.com/) and use the tag `openstaad` or `openstaadpython`.
-
-Issue tracker at __GitHub__: https://github.com/OpenStaad/OpenStaadPython/issues
+Issue tracker at __GitHub__:
+https://github.com/OpenStaad/OpenStaadPython/issues
 
 ## Contact
 
 Please __always__ post questions at the [forum](https://github.com/OpenStaad/OpenStaadPython/discussions) 
-or [stack overflow](https://stackoverflow.com/) to make answers 
-available to other users as well. 
+ to make answers available to other users as well. 
 
 Feedback is greatly appreciated.
 
