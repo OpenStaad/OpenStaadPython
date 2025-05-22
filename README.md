@@ -20,8 +20,6 @@ It aims to facilitate the connection between StaadPRO and Python, avoiding boile
 - Dependencies:
     - [comtypes](https://pypi.org/project/comtypes/)
 
-- Please contact the [developer](openstee611@gmail.com) for requests.
-
 ## Installation
 
 Basic installation by pip.
