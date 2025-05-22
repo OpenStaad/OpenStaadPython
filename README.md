@@ -6,7 +6,7 @@
 
 openstaad python is a starting project to wrap the official OpenStaad API functionalities into a Python package.
 
-It aims to facilitate the connection with the [OpenStaad API](https://docs.bentley.com/LiveContent/web/STAAD.Pro%20Help-v14/en/GUID-93E26CB6-E60E-4175-920A-72D504639722.html) functions, avoiding boilerplate code and type management, allowing the user to focus on the real automation tasks.
+It aims to facilitate the connection between StaadPRO and Python, avoiding boilerplate code and type management, allowing the user to focus on the real automation tasks.
 
 ## Quick Info
 
