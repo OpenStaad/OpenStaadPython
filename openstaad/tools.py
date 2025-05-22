@@ -25,6 +25,9 @@ def make_variant_vt_ref(obj, var_type):
 def make_safe_array_long_input(lista): 
     return automation._midlSAFEARRAY(ctypes.c_long).create(lista)
 
+def make_safe_array_int_input(lista):
+    return automation._midlSAFEARRAY(ctypes.c_int).create(lista)
+
 
 APICALL = {'file':'',
             'geometry':'Geometry',

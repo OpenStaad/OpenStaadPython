@@ -18,7 +18,9 @@ class Root():
             'GetSTAADFile',
             'GetSTAADFileFolder',
             'NewSTAADFile',
-            'SaveModel'
+            'SaveModel',
+            'CloseSTAADFile',
+            'OpenSTAADFile'
         ]
 
         for function_name in self._functions:
@@ -253,5 +255,15 @@ class Root():
 
     def SaveModel(self,silent:int):
         self._root.SaveModel(silent)
+
+    
+    def CloseSTAADFile(self):
+        self._root.CloseSTAADFile()
+
+    def OpenSTAADFile(self, file_name: str):
+        """
+        Opens a .STD file.
+        """
+        self._root.OpenSTAADFile(file_name)
 
     

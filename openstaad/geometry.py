@@ -480,21 +480,17 @@ class Geometry():
         self._geometry.DeletePlate(plate)
         
        
-    def _GetAreaOfPlate(self,plate):
-        safe_n1 = make_safe_array_double(1)
-        x = make_variant_vt_ref(safe_n1,  automation.VT_ARRAY |  automation.VT_R8)
-
-        self._geometry.GetAreaOfPlates([plate],x)
+    def GetAreaOfPlates(self,plates: list) -> list[float]:
         
-        return x.value[0][0]
-    
-    def GetAreaOfPlates(self,plates):
-        areas = []
-        for plate in plates:
-            area = self._GetAreaOfPlate(plate)
-            areas.append(area)
-
-        return areas
+        safe_palte_list = make_safe_array_int_input(plates)
+        plate_list = make_variant_vt_ref(safe_palte_list, automation.VT_ARRAY | automation.VT_I4)
+        
+        safe_area = make_safe_array_double(len(plates))
+        area = make_variant_vt_ref(safe_area,  automation.VT_ARRAY | automation.VT_R8)
+        
+        self._geometry.GetAreaOfPlates(plate_list,area)
+        
+        return area.value[0]
 
     
 

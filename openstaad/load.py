@@ -21,7 +21,9 @@ class Load():
             "GetLoadCaseTitle",
             "GetReferenceLoadCaseCount",
             "SetLoadActive",
-            "SetReferenceLoadActive"
+            "SetReferenceLoadActive",
+            "AddNodalLoad",
+            "ClearReferenceLoadCase"
         ]
 
         for function_name in self._functions:
@@ -156,6 +158,17 @@ class Load():
         """
         return self._load.SetReferenceLoadActive(load_case)
     
+    def AddNodalLoad(self, nodes : list[int], fx : float, fy:float, fz:float, mx:float, my:float, mz:float):
+        def make_safe_array_long(array):
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+
+        safe_list = make_safe_array_long(nodes)
+        varNodeNo = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+
+        self._load.AddNodalLoad(varNodeNo,fx, fy, fz, mx, my, mz)
+
+    def ClearReferenceLoadCase(self,reference_load_number: int):
+        self._load.ClearReferenceLoadCase(reference_load_number)
     
     
     
