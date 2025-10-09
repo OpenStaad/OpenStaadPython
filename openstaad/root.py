@@ -10,6 +10,7 @@ class Root():
         
         self._functions = [
             'Analyze',
+            'AnalizeEx',
             'GetAnalysisStatus',
             'GetApplicationVersion',
             'GetBaseUnit',
@@ -28,6 +29,12 @@ class Root():
     
     def Analyze(self):
         self._root.Analyze()
+
+    def AnalyzeEx(self,silent:int,hidden:int,wait:int):
+        """
+        This extended method analyzes the currently opened .STD file. This method is equivalent to running analysis from user interface. However, it has additional three arguments to specify whether to run the analysis in silent or hidden mode. The third parameter specifies whether the method should wait for the analysis to finish or return immediately. This method may be used in conjunction with SetSilentMode(), if one wants to suppress all dialog boxes displayed from the application during running of analysis.
+        """
+        self._root.AnalyzeEx(silent,hidden,wait)
 
     def GetAnalysisStatus(self):
         """

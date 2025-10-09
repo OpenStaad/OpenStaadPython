@@ -9,8 +9,12 @@ class Output():
 
         self._functions= [
             'GetMemberEndForces',
+            'GetMinMaxAxialForce',
+            'GetMinMaxBendingMoment',
+            'GetMinMaxShearForce',
             'GetModalMassParticipationFactors',
             'GetModeFrequency',
+            'GetNoOfModesExtracted',
             'GetSupportReactions'
         ]
 
@@ -33,6 +37,57 @@ class Output():
 
         return x.value[0]
 
+    def GetMinMaxAxialForce(self, beam:int, lc: int = 1):
+        """
+        Returns maximum and minimum bending moments and their locations for specified member number, load case, and bending direction.
+        """
+        ddmin = ctypes.c_double()
+        minpos = ctypes.c_double()
+        ddmax = ctypes.c_double()
+        maxpos = ctypes.c_double()
+        
+        retval = self._output.GetMinMaxAxialForce(
+            beam, lc,
+            ctypes.byref(ddmin), ctypes.byref(minpos),
+            ctypes.byref(ddmax), ctypes.byref(maxpos)
+        )
+
+        return ddmin.value, minpos.value, ddmax.value, maxpos.value
+
+    def GetMinMaxBendingMoment(self, beam:int, direction: str, lc: int = 1):
+        """
+        Returns maximum and minimum bending moments and their locations for specified member number, load case, and bending direction.
+        """
+        ddmin = ctypes.c_double()
+        minpos = ctypes.c_double()
+        ddmax = ctypes.c_double()
+        maxpos = ctypes.c_double()
+        
+        retval = self._output.GetMinMaxBendingMoment(
+            beam, direction, lc,
+            ctypes.byref(ddmin), ctypes.byref(minpos),
+            ctypes.byref(ddmax), ctypes.byref(maxpos)
+        )
+
+        return ddmin.value, minpos.value, ddmax.value, maxpos.value
+
+    def GetMinMaxShearForce(self, beam:int, direction: str, lc: int = 1):
+        """
+        Returns maximum and minimum shear force and their locations for specified member number, load case, and force direction.
+        """
+        ddmin = ctypes.c_double()
+        minpos = ctypes.c_double()
+        ddmax = ctypes.c_double()
+        maxpos = ctypes.c_double()
+        
+        retval = self._output.GetMinMaxShearForce(
+            beam, direction, lc,
+            ctypes.byref(ddmin), ctypes.byref(minpos),
+            ctypes.byref(ddmax), ctypes.byref(maxpos)
+        )
+
+        return ddmin.value, minpos.value, ddmax.value, maxpos.value
+
     def GetModalMassParticipationFactors(self, var_mode: int):
         """
         Get the modal mass participation factors in X, Y and Z directions for a given mode.
@@ -45,6 +100,9 @@ class Output():
         
         return (round(patX.value,5), round(patY.value,5), round(patZ.value,5))
     
+    def GetNoOfModesExtracted(self):
+        return self._output.GetNoOfModesExtracted()
+
     def GetModeFrequency(self, var_mode:int):
         """
         Get the natural frequency (Hz) for a given mode.

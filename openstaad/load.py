@@ -8,23 +8,30 @@ class Load():
         self._load = self._staad.Load
 
         self._functions= [
-            "AddMemberConcForce",
-            "AddResponseSpectrumLoadEx",
-            "AddSelfWeightInXYZ",
-            "AddWindDefinition",
-            "ClearPrimaryLoadCase",
-            "CreateNewPrimaryLoad",
-            "CreateNewReferenceLoad",
-            "DeleteDirectAnalysisDefinition",
-            "DeleteDirectAnalysisDefinitionParameter",
-            "DeleteWindDefinition",
-            "GetLoadCaseTitle",
-            "GetReferenceLoadCaseCount",
-            "SetLoadActive",
-            "SetReferenceLoadActive",
-            "AddNodalLoad",
-            "ClearReferenceLoadCase"
-        ]
+    	"AddMemberConcForce",
+	    "AddNodalLoad",
+    	"AddResponseSpectrumLoadEx",
+    	"AddSelfWeightInXYZ",
+    	"AddWindDefinition",
+    	"ClearPrimaryLoadCase",
+	    "ClearReferenceLoadCase",
+    	"CreateNewPrimaryLoad",
+    	"CreateNewReferenceLoad",
+    	"DeleteDirectAnalysisDefinition",
+    	"DeleteDirectAnalysisDefinitionParameter",
+    	"DeletePrimaryLoadCases",
+    	"DeleteWindDefinition",
+    	"GetLoadCombinationCaseCount",
+    	"GetLoadCombinationCaseNumbers",
+    	"GetLoadCaseTitle",
+    	"GetLoadListCount",
+    	"GetLoadType",
+    	"GetPrimaryLoadCaseCount",
+    	"GetReferenceLoadCaseCount",
+    	"GetReferenceLoadCaseNumbers",
+    	"SetLoadActive",
+    	"SetReferenceLoadActive"
+	    ]
 
         for function_name in self._functions:
             self._load._FlagAsMethod(function_name)
@@ -41,6 +48,15 @@ class Load():
         varBeamNo = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
 
         return self._load.AddMemberConcForce(varBeamNo,varDirection,varForce,varD1,varD2)
+    
+    def AddNodalLoad(self, nodes : list[int], fx : float, fy:float, fz:float, mx:float, my:float, mz:float):
+        def make_safe_array_long(array):
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+
+        safe_list = make_safe_array_long(nodes)
+        varNodeNo = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+
+        self._load.AddNodalLoad(varNodeNo,fx, fy, fz, mx, my, mz)
     
     def AddResponseSpectrumLoadEx(self, code_number:int, modal_combination:int, set_names_1:list, set_values_1:list, spectrum_data_pairs:list[tuple],set_names_2:list=None, set_values_2:list=None):
         """Adds Response Spectrum load item to the currently active load case.
@@ -102,6 +118,9 @@ class Load():
         """
         return self._load.ClearPrimaryLoadCase(load_case,is_reference_lc)
     
+    def ClearReferenceLoadCase(self,reference_load_number: int):
+        self._load.ClearReferenceLoadCase(reference_load_number)
+    
     def CreateNewPrimaryLoad(self,LoadTitle:str="LOAD CASE X"):
         """
         Creates new PRIMARY load case.
@@ -128,6 +147,9 @@ class Load():
         """
         return self._load.DeleteDirectAnalysisDefinitionParameter(parameter_type)
     
+    def DeletePrimaryLoadCases(self,load_case:int,is_reference:bool=False):
+        return self._load.DeletePrimaryLoadCases(load_case,is_reference)
+    
     def DeleteWindDefinition(self,type_No:int=0):
         """
         Deletes Wind definition. All definitions will be deleted if this input is set as 0.
@@ -139,6 +161,42 @@ class Load():
         Returns title of the specified load case as a text string. Input 0 to retrieve title of current active load case or reference load case.
         """
         return self._load.GetLoadCaseTitle(lc)
+    
+    def GetLoadCombinationCaseCount(self):
+        """
+        Gets total number of combination load case(s) present in the current structure.
+        """
+        return self._load.GetLoadCombinationCaseCount()
+    
+    def GetLoadCombinationCaseNumbers(self):
+        """
+        Gets all load combination case number(s).
+        """
+        lc_case_count=self._load.GetLoadCombinationCaseCount()
+        safe_list = make_safe_array_long(lc_case_count)
+        lista = make_variant_vt_ref(safe_list,  automation.VT_ARRAY | automation.VT_I4)
+
+        self._load.GetLoadCombinationCaseNumbers(lista)
+
+        return (lista[0])
+    
+    def GetLoadListCount(self):
+        """
+        Gets the number of existing load list(s)
+        """
+        return self._load.GetLoadListCount()
+    
+    def GetLoadType(self,load_No:int):
+        """
+        Returns primary load case category(s) as an long value.
+        """
+        return self._load.GetLoadType(load_No)
+
+    def GetPrimaryLoadCaseCount(self):
+        """
+        Returns the total number of primary load cases present in the current structure.
+        """
+        return self._load.GetPrimaryLoadCaseCount()
     
     def GetReferenceLoadCaseCount(self):
         """
@@ -158,17 +216,7 @@ class Load():
         """
         return self._load.SetReferenceLoadActive(load_case)
     
-    def AddNodalLoad(self, nodes : list[int], fx : float, fy:float, fz:float, mx:float, my:float, mz:float):
-        def make_safe_array_long(array):
-            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
-
-        safe_list = make_safe_array_long(nodes)
-        varNodeNo = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
-
-        self._load.AddNodalLoad(varNodeNo,fx, fy, fz, mx, my, mz)
-
-    def ClearReferenceLoadCase(self,reference_load_number: int):
-        self._load.ClearReferenceLoadCase(reference_load_number)
+    
     
     
     
