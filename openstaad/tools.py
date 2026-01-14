@@ -25,8 +25,12 @@ def make_variant_vt_ref(obj, var_type):
 def make_safe_array_long_input(lista): 
     return automation._midlSAFEARRAY(ctypes.c_long).create(lista)
 
-def make_safe_array_int_input(lista):
-    return automation._midlSAFEARRAY(ctypes.c_int).create(lista)
+def make_safe_bstr():
+    bstr = automation.BSTR("")
+    var = automation.VARIANT()
+    var._.c_void_p = ctypes.addressof(bstr)
+    var.vt = automation.VT_BSTR | automation.VT_BYREF
+    return var, bstr
 
 
 APICALL = {'file':'',
