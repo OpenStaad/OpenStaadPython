@@ -1,16 +1,31 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+from comtypes import CoInitialize
+from comtypes import COMError
 import os
 
-class Root():
-    def __init__(self):      
-        staad = client.GetActiveObject("StaadPro.OpenSTAAD")
-        self._root = staad
-        
+class Root:
+    def __init__(self, filePath: str = None):
+        CoInitialize()
+
+        try:
+            if filePath:
+                filePath = os.path.abspath(filePath)
+
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(filePath)
+                
+                self._root = client.CoGetObject(filePath, dynamic=True)
+            else:
+                self._root = client.GetActiveObject("StaadPro.OpenSTAAD")
+
+        except COMError:
+            raise RuntimeError("Cannot connect to STAAD.Pro")
+
         self._functions = [
             'Analyze',
-            'AnalizeEx',
+            'AnalyzeEx',          
             'GetAnalysisStatus',
             'GetApplicationVersion',
             'GetBaseUnit',
@@ -26,6 +41,9 @@ class Root():
 
         for function_name in self._functions:
             self._root._FlagAsMethod(function_name)
+
+    def __getattr__(self, name):
+        return getattr(self._root, name)
     
     def Analyze(self):
         self._root.Analyze()

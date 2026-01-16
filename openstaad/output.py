@@ -1,11 +1,29 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+from comtypes import CoInitialize
+from comtypes import COMError
+import os
 
 class Output():
-    def __init__(self):
-        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
-        self._output = self._staad.Output
+    def __init__(self, filePath: str = None):
+        CoInitialize()
+        
+        try:
+            if filePath:
+                filePath = os.path.abspath(filePath)
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(filePath)
+
+                root_com = client.CoGetObject(filePath, dynamic=True)
+            else:
+
+                root_com = client.GetActiveObject("StaadPro.OpenSTAAD")
+
+            self._output = root_com.Output
+
+        except COMError:
+            raise RuntimeError("Cannot connect to STAAD.Pro")
 
         self._functions= [
             'GetMemberEndForces',
@@ -20,6 +38,9 @@ class Output():
 
         for function_name in self._functions:
             self._output._FlagAsMethod(function_name)
+
+    def __getattr__(self, name):
+        return getattr(self._output, name)
 
     def GetMemberEndForces(self,beam, start = True, lc :int= 1,local: int = 0):
         """

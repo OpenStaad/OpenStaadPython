@@ -1,11 +1,29 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+from comtypes import CoInitialize
+from comtypes import COMError
+import os
 
 class Properties():
-    def __init__(self):
-        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
-        self._property = self._staad.Property
+    def __init__(self, filePath: str = None):
+        CoInitialize()
+        
+        try:
+            if filePath:
+                filePath = os.path.abspath(filePath)
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(filePath)
+
+                root_com = client.CoGetObject(filePath, dynamic=True)
+            else:
+
+                root_com = client.GetActiveObject("StaadPro.OpenSTAAD")
+
+            self._property = root_com.Property
+
+        except COMError:
+            raise RuntimeError("Cannot connect to STAAD.Pro")
 
         self._functions= [
             'GetAlphaAngleForSection',
@@ -50,6 +68,9 @@ class Properties():
 
         for function_name in self._functions:
             self._property._FlagAsMethod(function_name)
+    
+    def __getattr__(self, name):
+        return getattr(self._properties, name)
 
     def GetAlphaAngleForSection(self,ref_no:int):
         """

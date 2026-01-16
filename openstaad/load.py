@@ -1,11 +1,29 @@
 from openstaad.tools import *
 from comtypes import automation
 from comtypes import client
+from comtypes import CoInitialize
+from comtypes import COMError
+import os
 
 class Load():
-    def __init__(self):
-        self._staad = client.GetActiveObject("StaadPro.OpenSTAAD")
-        self._load = self._staad.Load
+    def __init__(self, filePath: str = None):
+        CoInitialize()
+        
+        try:
+            if filePath:
+                filePath = os.path.abspath(filePath)
+                if not os.path.exists(filePath):
+                    raise FileNotFoundError(filePath)
+
+                root_com = client.CoGetObject(filePath, dynamic=True)
+            else:
+
+                root_com = client.GetActiveObject("StaadPro.OpenSTAAD")
+
+            self._load = root_com.Load
+
+        except COMError:
+            raise RuntimeError("Cannot connect to STAAD.Pro")
 
         self._functions= [
     	"AddMemberConcForce",
@@ -35,6 +53,9 @@ class Load():
 
         for function_name in self._functions:
             self._load._FlagAsMethod(function_name)
+
+    def __getattr__(self, name):
+        return getattr(self._load, name)
 
     def AddMemberConcForce(self,varBeamNo:list[int],varDirection:int,varForce:float,varD1:float,varD2:float):
         """
