@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "openstaad"
-version = "0.0.6"
+version = "0.0.11a1"
 authors = [{ name = "konrad", email = "opensteel611@example.com" }]
 description = "A small example package for openstaad python package"
 readme = "README.md"
@@ -15,7 +15,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["comtypes==1.2.0"]
+dependencies = ["comtypes==1.4.15"]
 
 [project.urls]
 Homepage = "https://github.com/OpenStaad/OpenStaadPython"
