@@ -33,6 +33,8 @@ class Geometry():
         "AddPlate",
         "ClearMemberSelection",
         "ClearPlateSelection",
+        "CreateGroup",
+        "UpdateGroup",
         "CreatePhysicalMember",
         "DeletePhysicalMember",
         "DeletePlate",
@@ -512,5 +514,162 @@ class Geometry():
         return area.value[0]
 
     
+    def CreateGroup(self, group_type: int, group_name: str):
+        """
+        Creates a group with specified name for the specified type for selected entities.
+        
+        IMPORTANT: You must select entities before calling this function!
+        Use SelectMultipleBeams(), SelectMultiplePlates(), etc. to select entities first.
 
+        Parameters:
+        group_type (int): The type of the group:
+            1: Nodes
+            2: Members  
+            3: Plates
+            4: Solids
+            5: Geometry (Members, Plates and Solids)
+            6: Floor (Floor beam)
+        group_name (str): The name of the group to be created.
+
+        Returns:
+        int: Return code from STAAD:
+            0: OK
+            -1: General error
+            -100: Invalid Argument
+            -110: No beam/plate/solid has been selected
+            -2005: No node has been selected
+            -3005: No member has been selected
+            -4005: No plate has been selected
+            -5005: No solid has been selected
+            -7001: Group already exists
+        """
+        try:
+            # Validar parámetros de entrada
+            if not isinstance(group_type, int) or group_type < 1 or group_type > 6:
+                raise ValueError("group_type debe ser un entero entre 1 y 6")
+            
+            if not isinstance(group_name, str) or not group_name.strip():
+                raise ValueError("group_name debe ser una cadena no vacía")
+            
+            # Limpiar el nombre del grupo (remover espacios extra)
+            clean_group_name = group_name.strip()
+            
+            # Crear parámetro seguro para el nombre del grupo usando tools
+            safe_group_name, bstr_name = make_safe_bstr()
+            bstr_name.value = clean_group_name
+            
+            # Llamar a la función de STAAD con parámetros seguros
+            result = self._geometry.CreateGroup(group_type, safe_group_name)
+            
+            # Interpretar el resultado
+            if result == 0:
+                print(f"✓ Grupo '{clean_group_name}' creado exitosamente")
+            elif result == -2005:
+                print(f"✗ Error: No hay nodos seleccionados para crear el grupo")
+            elif result == -3005:
+                print(f"✗ Error: No hay miembros seleccionados para crear el grupo")
+            elif result == -4005:
+                print(f"✗ Error: No hay placas seleccionadas para crear el grupo")
+            elif result == -110:
+                print(f"✗ Error: No hay elementos seleccionados para crear el grupo")
+            elif result == -7001:
+                print(f"✗ Error: El grupo '{clean_group_name}' ya existe")
+            elif result == -100:
+                print(f"✗ Error: Argumento inválido")
+            else:
+                print(f"✗ Error desconocido: {result}")
+            
+            return result
+            
+        except Exception as e:
+            print(f"Error en CreateGroup: {e}")
+            raise
+    
+    def UpdateGroup(self, group_name: str, flag: int, entity_list: list):
+        """
+        Updates (replaces, removes, adds) entities to a specified group.
+        
+        Parameters:
+        group_name (str): Group string name.
+        flag (int): Option for operation:
+            0 = replace the group entities with array of entities
+            1 = remove entities from this group
+            2 = add entities to this group
+        entity_list (list): List of entity number IDs to update in the group.
+        
+        Returns:
+        int: Return code from STAAD:
+            0: OK
+            -1: General error
+            -107: Array of integer expected
+        
+        Example:
+        # Add entities to "NodeGroup" group
+        result = geometry.UpdateGroup("NodeGroup", 2, [101, 102, 103, 104])
+        
+        # Replace all entities in group
+        result = geometry.UpdateGroup("BeamGroup", 0, [201, 202, 203])
+        
+        # Remove entities from group  
+        result = geometry.UpdateGroup("BeamGroup", 1, [201, 202])
+        """
+        try:
+            # Validar parámetros de entrada
+            if not isinstance(group_name, str) or not group_name.strip():
+                raise ValueError("group_name debe ser una cadena no vacía")
+            
+            if not isinstance(flag, int) or flag < 0 or flag > 2:
+                raise ValueError("flag debe ser un entero entre 0 y 2")
+            
+            if not isinstance(entity_list, list) or len(entity_list) == 0:
+                raise ValueError("entity_list debe ser una lista no vacía de enteros")
+            
+            # Validar que todos los elementos sean enteros
+            if not all(isinstance(x, int) for x in entity_list):
+                raise ValueError("Todos los elementos en entity_list deben ser enteros")
+            
+            # Limpiar el nombre del grupo
+            clean_group_name = group_name.strip()
+            
+            # Crear parámetro seguro para el nombre del grupo
+            safe_group_name, bstr_name = make_safe_bstr()
+            bstr_name.value = clean_group_name
+            
+            # Crear VARIANT para el flag
+            flag_variant = automation.VARIANT(flag)
+            
+            # Crear VARIANT para entity count
+            entity_count = len(entity_list)
+            entity_count_variant = automation.VARIANT(entity_count)
+            
+            # Crear array seguro para la lista de entidades
+            safe_entity_list = make_safe_array_long_input(entity_list)
+            entity_list_variant = make_variant_vt_ref(safe_entity_list, automation.VT_ARRAY | automation.VT_I4)
+            
+            # Llamar a la función de STAAD con parámetros seguros
+            result = self._geometry.UpdateGroup(
+                safe_group_name,
+                flag_variant,
+                entity_count_variant,
+                entity_list_variant
+            )
+            
+            # Interpretar el resultado
+            if result == 0:
+                operation_names = {0: "reemplazado", 1: "eliminado", 2: "agregado"}
+                operation = operation_names.get(flag, "actualizado")
+                print(f"✓ Grupo '{clean_group_name}' {operation} exitosamente ({entity_count} entidades)")
+            elif result == -1:
+                print(f"✗ Error general actualizando el grupo '{clean_group_name}'")
+            elif result == -107:
+                print(f"✗ Error: Se esperaba un array de enteros")
+            else:
+                print(f"✗ Error desconocido actualizando grupo '{clean_group_name}': {result}")
+            
+            return result
+            
+        except Exception as e:
+            print(f"Error en UpdateGroup: {e}")
+            raise
+    
     

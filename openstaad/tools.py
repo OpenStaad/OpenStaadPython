@@ -32,6 +32,9 @@ def make_safe_bstr():
     var.vt = automation.VT_BSTR | automation.VT_BYREF
     return var, bstr
 
+def make_safe_array_int_input(lista):
+    return automation._midlSAFEARRAY(ctypes.c_int).create(lista)
+
 
 APICALL = {'file':'',
             'geometry':'Geometry',
