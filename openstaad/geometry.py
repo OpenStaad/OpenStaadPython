@@ -81,6 +81,7 @@ class Geometry():
         "GetSelectedPhysicalMembers",
         "GetSelectedPlates",
         "IntersectBeams",
+        "RenumberBeam",
         "SelectMultipleBeams",
         "SelectMultiplePhysicalMembers",
         "SelectMultiplePlates",
@@ -325,25 +326,16 @@ class Geometry():
 
     def IntersectBeams(self, Method: int, BeamNosArray: list[int], dTolerance: float, NewBeamNosArray: int):
         
-        # Conversión de dTolerance
         safe_n1 = make_safe_array_double(1)
         dTolerance = make_variant_vt_ref(safe_n1, automation.VT_R8)
 
-        # Ajuste en make_safe_array_long para manejar listas
         def make_safe_array_long(array):
             size = len(array)
             return automation._midlSAFEARRAY(ctypes.c_long).create(array)
-        
-        # Conversión de BeamNosArray
+    
         safe_beam_list = make_safe_array_long(BeamNosArray)
         BeamNosArray = make_variant_vt_ref(safe_beam_list, automation.VT_ARRAY | automation.VT_I4)
         
-        # Conversión de NewBeamNosArray
-        # safe_beam_list = make_safe_array_long(NewBeamNosArray)
-        # NewBeamNosArray = make_variant_vt_ref(safe_beam_list, automation.VT_ARRAY | automation.VT_I4)
-
-        
-        # Llamada a la función interna
         retval = self._geometry.IntersectBeams(Method, BeamNosArray, dTolerance, NewBeamNosArray)
         return retval
 
@@ -469,6 +461,13 @@ class Geometry():
 
         return (lista[0])
     
+    def RenumberBeam(self, oldBeamNo: int, newBeamNo: int):
+        """
+        Renumber a beam.
+        """
+        result = int(self._geometry.RenumberBeam(oldBeamNo, newBeamNo))
+        return bool(result)
+
     #SelectPlate
 
     def SelectPlate(self,plate,add_mode = True):

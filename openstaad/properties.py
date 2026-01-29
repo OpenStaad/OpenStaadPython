@@ -68,10 +68,122 @@ class Properties():
 
         for function_name in self._functions:
             self._property._FlagAsMethod(function_name)
-    
-    def __getattr__(self, name):
-        return getattr(self._properties, name)
 
+    def AssignBeamProperty(self, beams_list: list[int], propertyNo: int):
+        """
+        Assign beam property.
+        """
+        def make_safe_array_long(array):
+            size = len(array)
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+
+        safe_list = make_safe_array_long(beams_list)
+        beams_list = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+
+        retval= self._property.AssignBeamProperty(beams_list, propertyNo)
+
+        return retval
+    
+    def AssignMaterialToMember(self, material_name: str, beamNo: list[int]):
+        """
+        Assign material to member.
+        """
+        def make_safe_array_long(array):
+            size = len(array)
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+        
+        safe_list = make_safe_array_long(beamNo)
+        beamNo = make_variant_vt_ref(safe_list, automation.VT_ARRAY | automation.VT_I4)
+
+        retval= self._property.AssignMaterialToMember(material_name, beamNo)
+
+        return retval
+    
+    def AssignMemberSpecToBeam(self, Beams: list[int], specNo: int):
+        """
+        Assign specifications to beam(s).
+        """
+        def make_safe_array_long(array):
+            size = len(array)
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+        
+        # Crear SAFEARRAY para 'release'
+        safe_list_release = make_safe_array_long(Beams)
+        Beams = make_variant_vt_ref(safe_list_release, automation.VT_ARRAY | automation.VT_I4)
+
+        retval= self._property.AssignMemberSpecToBeam(Beams, specNo)
+
+        return retval
+    
+    def CreateBeamPropertyFromTable(self,Country_code:int,profile_name:str,type_spec:int=0,spec_1:float=0.0,spec_2:float=0.0):
+        
+        """
+        Creates beam property from table.
+
+        COUNTRY CODE
+         1->    American
+         2->	Australian
+         3->	British
+         4->	Canadian
+         5->	Chinese
+         6->	Dutch
+         7->	European
+         8->	French
+         9->	German
+         10->	Indian
+         11->	Japanese
+         12->	Russian
+         13->	Southafrican
+         14->	Spanish
+         15->	Venezuelan
+         16->	Korean
+         17->	Aluminum
+         18->	American cold formed
+         19->	Indian cold formed
+         20->	Mexican
+         21->	American Steel Joist
+         22->	AITCTimber
+         23->	Lysaght cold formed
+         24->	British cold formed
+         25->	Canadian Timber
+         26->	Butler cold formed
+         27->	Kingspan cold formed
+         28->	RCeco cold formed
+         29->	Japanese cold formed
+         30->	Australian cold formed
+        """
+        propertyNo = self._property.CreateBeamPropertyFromTable(Country_code,profile_name,type_spec,spec_1,spec_2)
+    
+    def CreateMemberReleaseSpec(self, location: int, release: list[int], spring_const: list[float]):
+        """
+        Creates MEMBER RELEASE specification.
+
+        LOCATION
+            0 -> Start
+            1 -> End
+        RELEASE
+            [FX, FY, FZ, MX, MY, MZ]
+        SPRINGCONST
+            [KFX, KFY, KFZ, KMX, KMY, KMZ]
+        """
+        
+        def make_safe_array_long(array):
+            size = len(array)
+            return automation._midlSAFEARRAY(ctypes.c_long).create(array)
+        
+        def make_safe_array_double(array):
+            size = len(array)
+            return automation._midlSAFEARRAY(ctypes.c_double).create(array)
+        
+        safe_list_release = make_safe_array_long(release)
+        release_variant = make_variant_vt_ref(safe_list_release, automation.VT_ARRAY | automation.VT_I4)
+        
+        safe_list_spring_const = make_safe_array_double(spring_const)
+        spring_const_variant = make_variant_vt_ref(safe_list_spring_const, automation.VT_ARRAY | automation.VT_R8)
+        
+        retval = self._property.CreateMemberReleaseSpec(location, release_variant, spring_const_variant)
+        return retval
+    
     def GetAlphaAngleForSection(self,ref_no:int):
         """
         Returns the alpha angle of the section in radian.
@@ -702,8 +814,8 @@ class Properties():
         a6 = round(n6.value[0]*1000000)/1000000
         a7 = round(n7.value[0]*1000)/1000
         a8 = round(n8.value[0]*1000)/1000
-        a9 = round(n9.value[0]*10000)/10000
-        a10 = round(n10.value[0]*10000)/10000
+        a9 = round(n9.value[0]*1000)/1000
+        a10 = round(n10.value[0]*1000)/1000
         
         return {'Is_Ref':ret_val,
                 'WID': a1,
@@ -802,4 +914,48 @@ class Properties():
         else:
             return True
 
-    
+    def GetBeamMaterialName(self, beam:int):
+        """
+        Gets the material name assigned to a given beam.
+        """
+        return self._property.GetBeamMaterialName(beam)
+
+    def GetMaterialProperty(self, material_name: str):
+        """
+        Get material constants based on specific material name.
+
+        Parameters:
+            [in]  material_name: Identification title of the material.
+
+        Returns:
+            dict: Dictionary with material properties:
+                - 'RetVal': Return value (0 = OK, -6023 = Material not found)
+                - 'Elasticity': Modulus of elasticity (E)
+                - 'Poisson': Poisson's ratio (POI)
+                - 'Density': Weight density (DEN)
+                - 'Alpha': Coefficient of thermal expansion (ALP)
+                - 'Damp': Damping ratio (DAMP)
+        """
+        elasticity = ctypes.c_double()
+        poisson = ctypes.c_double()
+        density = ctypes.c_double()
+        alpha = ctypes.c_double()
+        damp = ctypes.c_double()
+
+        ret_val = self._property.GetMaterialProperty(
+            material_name,
+            ctypes.byref(elasticity),
+            ctypes.byref(poisson),
+            ctypes.byref(density),
+            ctypes.byref(alpha),
+            ctypes.byref(damp)
+        )
+
+        return {
+            'RetVal': ret_val,
+            'Elasticity': elasticity.value,
+            'Poisson': poisson.value,
+            'Density': density.value,
+            'Alpha': alpha.value,
+            'Damp': damp.value
+        }

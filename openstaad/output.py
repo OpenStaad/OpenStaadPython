@@ -33,7 +33,8 @@ class Output():
             'GetModalMassParticipationFactors',
             'GetModeFrequency',
             'GetNoOfModesExtracted',
-            'GetSupportReactions'
+            'GetSupportReactions',
+            'GetMultipleMemberSteelDesignRatio'
         ]
 
         for function_name in self._functions:
@@ -145,5 +146,6 @@ class Output():
 
         return x.value[0]
     
+
     
     
