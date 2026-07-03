@@ -1,3 +1,0 @@
-Actualizar version en pyproject.toml
-git tag 0.0.x
-git push origin --tags
