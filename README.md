@@ -2,6 +2,14 @@
 
 [![PyPI Downloads](https://static.pepy.tech/badge/openstaad)](https://pepy.tech/projects/openstaad)
 
+> [!WARNING]
+> **The class-based API is deprecated.** The standalone classes (`Root()`, `Geometry()`,
+> `Load()`, `Output()`, `Properties()`, `View()`, `Design()`, `Command()`, `Support()`) are
+> deprecated in the `0.0.x` releases and **will be removed in `0.1.0`**. Instantiating any of
+> them now emits a `FutureWarning`. Use the new single-import session API instead:
+> `from openstaad import ops` → `ops.connect()`. See [Migration](#migration) below, or the full
+> [migration guide](https://www.openstaad.com/docs/migration_guide).
+
 ## Abstract
 
 openstaad python is a starting project to wrap the official OpenStaad API functionalities into a Python package.
@@ -33,26 +41,67 @@ pip install openstaad
 For the next example, a valid STAAD.Pro file should be open.
 
 ```Python
-from openstaad import Geometry, Root
+from openstaad import ops
 
-geometry = Geometry()
-root = Root()
+# Connect to the running STAAD.Pro session (a valid .STD file must be open)
+s = ops.connect()
 
 # Function that returns a list
-beam_list = geometry.GetBeamList()
+beam_list = s.GetBeamList()
 
-# Function that retuns a string
-file_name = root.GetSTAADFile()
+# Function that returns a string
+file_name = s.GetSTAADFile()
 
-# Function that recibe an argument
-beam_number = 10 
-beam_nodes = geometry.GetMemberIncidence(beam_number)
-
+# Function that receives an argument
+beam_number = 10
+beam_nodes = s.GetMemberIncidence(beam_number)
 
 print(beam_list)
 print(file_name)
 print(beam_nodes)
 ```
+
+## Migration
+
+The class-based API is deprecated and will be removed in `0.1.0`. Migrating is almost entirely
+mechanical: **method names stay the same** — you just consolidate the per-domain instances
+(`Geometry()`, `Root()`, …) into a single session object returned by `ops.connect()` and route
+every call through it.
+
+```Python
+# Legacy (deprecated)
+from openstaad import Geometry, Root
+geometry = Geometry()
+root = Root()
+beams = geometry.GetBeamList()
+
+# New
+from openstaad import ops
+s = ops.connect()
+beams = s.GetBeamList()
+```
+
+A few methods need manual attention:
+
+**Renamed**
+
+- `GetElementGlobalOffset` → `GetElementGlobalOffSet`
+- `GetElementOffsetSpec` → `GetElementOffSetSpec`
+- `AddResponseSpectrumLoadEx` → `AddResponseSpectrumLoad` (signature also changes: `data_pairs` moves to the last argument)
+
+**Removed**
+
+- `IsRelease()` — no direct replacement; call `GetMemberReleaseSpecEx()` and evaluate the result yourself.
+
+**Same name, different result (behavior changes)**
+
+- Coordinates and lengths are no longer rounded to 3 decimals — full precision is returned.
+- `GetApplicationVersion` no longer includes the `"Version "` prefix.
+- `GetAnalysisStatus` dict key `"CPUTime(sec)"` is now `"CPUTime"`.
+- `NewSTAADFile` no longer creates subfolders and now requires three arguments.
+- `SaveModel` parameter changed from `silent: int` to `saveSilent: bool`.
+
+Full guide: <https://www.openstaad.com/docs/migration_guide>.
 
 ## Website
 
