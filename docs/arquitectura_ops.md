@@ -170,6 +170,25 @@ Hallazgos de comportamiento:
 - `GetNotionalLoadByIndex`: llamaba a `GetElementLoadInfo` → corregido a `GetNotionalLoadByIndex`.
   **⚠️ orden/tipos de out-params sin verificar contra la firma COM real — confirmar en Windows** (marcado en el código).
 
+**Firmas del oficial CORREGIDAS — nombres nuevos, fuera del espejo** (`support.py`):
+- `AssignSupportToNode`: el oficial declara `NodeIDs: list | int` y manda un SAFEARRAY, pero el método COM
+  procesa **un solo nodo por llamada** y descarta el resto sin error
+  ([issue #11](https://github.com/OpenStaad/OpenStaadPython/issues/11), verificado en STAAD.Pro 2024; la
+  documentación VBA de Bentley siempre usa bucle). Aquí la versión singular acepta solo escalares y **rechaza
+  colecciones con `TypeError`**; se añade `AssignSupportToNodes` para el caso múltiple.
+
+  **Regla general**: cuando el oficial promete una colección que el COM no honra, no se cambia la firma del
+  nombre oficial (rompería a quien ya escribió su propio bucle) — se restringe al comportamiento real y se
+  añade un nombre plural nuestro. Esto **rompe el espejo PascalCase** de la §7 y es la excepción aceptada:
+  el nombre plural no existe en la API de Bentley y no debe esperarse en sus futuras versiones.
+
+  Los nombres plurales devuelven `bool`, nunca resultados por nodo, ni documentan el estado tras un fallo
+  parcial: eso mantiene el bucle intercambiable por una llamada batch (p.ej. `AssignSupportToEntityList`,
+  sin verificar) el día que se confirme que es más rápida.
+
+- **Pendientes del mismo olor, sin evidencia todavía**: `RemoveSupportFromNode` y el resto de firmas `list`
+  del oficial. No se tocan hasta poder probarlas en STAAD real.
+
 **Bugs del oficial que también se arreglaron de facto**:
 - `output.GetResultantForceAlongLineForPlateList`: el oficial envolvía el array en una lista →
   `addressof(list)` crashea; aquí se usa `out_double_array(6)`.
