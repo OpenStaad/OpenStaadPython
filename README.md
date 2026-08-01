@@ -5,7 +5,7 @@
 > [!WARNING]
 > **The class-based API is deprecated.** The standalone classes (`Root()`, `Geometry()`,
 > `Load()`, `Output()`, `Properties()`, `View()`, `Design()`, `Command()`, `Support()`) are
-> deprecated in the `0.0.x` releases and **will be removed in `0.1.0`**. Instantiating any of
+> deprecated in the `0.0.14` releases and **will be removed in `0.1.0`**. Instantiating any of
 > them now emits a `FutureWarning`. Use the new single-import session API instead:
 > `from openstaad import ops` → `ops.connect()`. See [Migration](#migration) below, or the full
 > [migration guide](https://www.openstaad.com/docs/migration_guide).
