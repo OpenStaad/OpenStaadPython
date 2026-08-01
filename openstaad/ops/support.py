@@ -8,6 +8,7 @@ los condicionales que son *lógica de retorno* (p.ej. devolver [] si count==0).
 
 from .bridge import Bridge
 from ._com import acquire
+from ._coerce import as_id, as_id_list
 
 
 class Support:
@@ -35,10 +36,42 @@ class Support:
             self._support._FlagAsMethod(function_name)
 
     # ---- supports básicos ----
-    def AssignSupportToNode(self, NodeIDs, SupportID: int):
-        if isinstance(NodeIDs, int):
-            NodeIDs = [NodeIDs]
-        self._support.AssignSupportToNode(self._b.in_int_array(NodeIDs), SupportID)
+    def AssignSupportToNode(self, NodeID, SupportID: int) -> bool:
+        """Asigna un soporte a UN nodo. Devuelve True si STAAD la aceptó.
+
+        El método COM procesa un solo nodo por llamada: pasarle un array asigna
+        únicamente el primer elemento, sin error. Por eso aquí se rechaza
+        cualquier colección — para varios nodos usa `AssignSupportToNodes`.
+        """
+        return self._assign_support_to_one(
+            as_id(NodeID, "NodeID", "AssignSupportToNodes"), SupportID
+        )
+
+    def AssignSupportToNodes(self, NodeIDs, SupportID: int) -> bool:
+        """Asigna un soporte a uno o varios nodos (int, lista, tupla, iterable).
+
+        Devuelve True si **todas** las asignaciones fueron aceptadas.
+
+        No forma parte de la API oficial de OpenSTAAD: existe porque el método
+        COM es de un nodo por llamada. Ver `AssignSupportToNode`.
+        """
+        results = [
+            self._assign_support_to_one(node_id, SupportID)
+            for node_id in as_id_list(NodeIDs, "NodeIDs")
+        ]
+        return all(results)
+
+    def _assign_support_to_one(self, NodeID: int, SupportID: int) -> bool:
+        """Única llamada COM de asignación: el punto que ambas variantes comparten.
+
+        Aislado a propósito. Si algún día se confirma que
+        `AssignSupportToEntityList` acepta nodos y es más rápido, se sustituye
+        aquí el bucle por una sola llamada sin tocar la superficie pública.
+        """
+        retval = self._support.AssignSupportToNode(NodeID, SupportID)
+        # El oficial trata retval < 0 como error; no todas las versiones COM
+        # devuelven algo, y en ese caso no hay nada que interpretar.
+        return retval is None or retval >= 0
 
     def CreateSupportFixed(self):
         return self._support.CreateSupportFixed()
